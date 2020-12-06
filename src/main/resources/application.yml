@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: illness-tracker/api/v1
+    context-path: /illness-tracker/api/v1
 spring:
   h2:
     console:
@@ -12,6 +12,9 @@ spring:
     url: jdbc:h2:mem:testdb
     username: sa
     password:
+    initialization-mode: always
   jpa:
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
