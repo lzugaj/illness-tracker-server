@@ -1,6 +1,8 @@
 package com.luv2code.illnesstracker.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.luv2code.illnesstracker.domain.base.BaseEntity;
+import com.luv2code.illnesstracker.domain.enums.GenderType;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,15 +12,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString
 @Builder
-@Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "PATIENT")
+@EqualsAndHashCode(callSuper = true)
 public class Patient extends BaseEntity {
 
     @Column(name = "first_name")
@@ -71,13 +73,16 @@ public class Patient extends BaseEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @ToString.Exclude
     @ManyToMany
+    @ToString.Exclude
     @JoinTable(
             name = "PATIENT_ROLE",
             joinColumns = @JoinColumn(name = "patient_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "patients")
+    private List<BodyMassIndex> bodyMassIndexes;
 
 }

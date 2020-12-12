@@ -4,6 +4,7 @@ import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.dto.PatientDto;
 import com.luv2code.illnesstracker.dto.mapper.PatientMapper;
 import com.luv2code.illnesstracker.service.PatientService;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
+@Api("Patient Controller")
 public class PatientController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientController.class);
@@ -38,7 +40,6 @@ public class PatientController {
 
         final PatientDto dto = patientMapper.toPatientDto(searchedPatient);
         LOGGER.info("Successfully mapped Patient to DTO.");
-
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
@@ -49,7 +50,6 @@ public class PatientController {
 
         final List<PatientDto> dto = patientMapper.toPatientsDto(patients);
         LOGGER.info("Successfully mapped Patients to DTO.");
-
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
@@ -63,7 +63,6 @@ public class PatientController {
 
         final PatientDto dto = patientMapper.toPatientDto(updatedPatient);
         LOGGER.info("Successfully mapped Patient to DTO.");
-
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
@@ -74,7 +73,6 @@ public class PatientController {
 
         patientService.delete(searchedPatient);
         LOGGER.info("Successfully deleted Patient with id: ´{}´.", id);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

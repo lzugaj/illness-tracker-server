@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.dto;
 
-import com.luv2code.illnesstracker.domain.GenderType;
+import com.luv2code.illnesstracker.domain.enums.GenderType;
 import lombok.Data;
 
 import java.time.LocalDate;

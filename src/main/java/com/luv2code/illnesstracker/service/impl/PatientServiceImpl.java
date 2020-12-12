@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.luv2code.illnesstracker.domain.RoleType.PATIENT;
+import static com.luv2code.illnesstracker.domain.enums.RoleType.PATIENT;
 
 @Service
 public class PatientServiceImpl implements PatientService {

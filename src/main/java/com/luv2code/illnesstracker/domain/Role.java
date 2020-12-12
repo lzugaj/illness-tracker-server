@@ -1,10 +1,10 @@
 package com.luv2code.illnesstracker.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
