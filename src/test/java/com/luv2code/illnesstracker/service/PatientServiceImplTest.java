@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.service;
 
-import com.luv2code.illnesstracker.domain.GenderType;
+import com.luv2code.illnesstracker.domain.enums.GenderType;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.Role;
 import com.luv2code.illnesstracker.exception.EmailAlreadyExistsException;
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.luv2code.illnesstracker.domain.RoleType.PATIENT;
+import static com.luv2code.illnesstracker.domain.enums.RoleType.PATIENT;
 
 @SpringBootTest
 public class PatientServiceImplTest {
@@ -141,7 +141,15 @@ public class PatientServiceImplTest {
         Assertions.assertEquals(1, searchedPatients.size());
     }
 
-    // TODO: update
+    @Test
+    public void should_Update_Patient() {
+        final Patient updatedPatient = patientService.update(secondPatient, firstPatient);
+
+        Assertions.assertNotNull(updatedPatient);
+        Assertions.assertEquals("Michael", updatedPatient.getFirstName());
+        Assertions.assertEquals("Jordan", updatedPatient.getLastName());
+        Assertions.assertEquals("michael.jordan23@gmail.com", updatedPatient.getEmail());
+    }
 
     @Test
     public void should_Delete_Patient() {

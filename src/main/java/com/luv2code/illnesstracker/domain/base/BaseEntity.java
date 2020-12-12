@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.domain;
+package com.luv2code.illnesstracker.domain.base;
 
 import lombok.Data;
 

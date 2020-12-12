@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.service;
 
-import com.luv2code.illnesstracker.domain.GenderType;
+import com.luv2code.illnesstracker.domain.enums.GenderType;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.Role;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;

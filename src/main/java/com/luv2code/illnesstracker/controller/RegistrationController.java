@@ -1,6 +1,7 @@
 package com.luv2code.illnesstracker.controller;
 
 import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.dto.PatientDto;
 import com.luv2code.illnesstracker.dto.mapper.PatientMapper;
 import com.luv2code.illnesstracker.service.PatientService;
 import org.slf4j.Logger;
@@ -38,9 +39,9 @@ RegistrationController {
         final Patient newPatient = patientService.save(patient);
         LOGGER.info("Successfully created new Patient with id: ´{}´.", newPatient.getId());
 
-//        final PatientDto dto = patientMapper.toPatientDto(newPatient);
-//        LOGGER.info("Successfully mapped Patient to DTO.");
+        final PatientDto dto = patientMapper.toPatientDto(newPatient);
+        LOGGER.info("Successfully mapped Patient to DTO.");
 
-        return new ResponseEntity<>(newPatient, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }
