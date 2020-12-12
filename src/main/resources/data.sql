@@ -2,3 +2,10 @@
 insert into "ROLE" values (1, 'PATIENT');
 insert into "ROLE" values (2, 'DOCTOR');
 insert into "ROLE" values (3, 'ADMIN');
+
+insert into "BODY_MASS_INDEX_INFO" values (1, 'Below 18.5', 'Underweight');
+insert into "BODY_MASS_INDEX_INFO" values (2, '18.5-24.9', 'Normal weight');
+insert into "BODY_MASS_INDEX_INFO" values (3, '25.0-29.9', 'Overweight');
+insert into "BODY_MASS_INDEX_INFO" values (4, '30.0-34.9', 'Obesity class I');
+insert into "BODY_MASS_INDEX_INFO" values (5, '35.0-39.9', 'Obesity class II');
+insert into "BODY_MASS_INDEX_INFO" values (6, 'Above 40', 'Obesity class III');
