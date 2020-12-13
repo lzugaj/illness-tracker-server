@@ -1,13 +1,13 @@
 package com.luv2code.illnesstracker.service;
 
-import com.luv2code.illnesstracker.domain.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.enums.GenderType;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.Role;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.repository.BodyMassIndexRepository;
-import com.luv2code.illnesstracker.service.impl.BodyMassIndexServiceImpl;
+import com.luv2code.illnesstracker.service.impl.illness.BodyMassIndexServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

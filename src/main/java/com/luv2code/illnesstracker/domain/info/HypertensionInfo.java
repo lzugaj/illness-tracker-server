@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.domain.info;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.Hypertension;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import lombok.*;
 
@@ -18,18 +18,21 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "BODY_MASS_INDEX_INFO")
-public class BodyMassIndexInfo extends BaseEntity {
+@Table(name = "HYPERTENSION_INFO")
+public class HypertensionInfo extends BaseEntity {
 
-    @Column(name = "value")
-    private String value;
+    @Column(name = "systolic_range")
+    private String systolicRange;
+
+    @Column(name = "diastolic_range")
+    private String diastolicRange;
 
     @Column(name = "classification")
     private String classification;
 
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "bodyMassIndexInfo")
-    private List<BodyMassIndex> bodyMassIndexes;
+    @OneToMany(mappedBy = "hypertensionInfo")
+    private List<Hypertension> hypertension;
 
 }

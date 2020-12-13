@@ -3,7 +3,7 @@ package com.luv2code.illnesstracker.service;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.repository.BodyMassIndexInfoRepository;
-import com.luv2code.illnesstracker.service.impl.BodyMassIndexInfoServiceImpl;
+import com.luv2code.illnesstracker.service.impl.info.BodyMassIndexInfoServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

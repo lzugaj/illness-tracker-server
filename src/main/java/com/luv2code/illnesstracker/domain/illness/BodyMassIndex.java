@@ -1,12 +1,14 @@
-package com.luv2code.illnesstracker.domain;
+package com.luv2code.illnesstracker.domain.illness;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity

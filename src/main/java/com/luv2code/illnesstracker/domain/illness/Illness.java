@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.domain;
+package com.luv2code.illnesstracker.domain.illness;
 
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import lombok.*;

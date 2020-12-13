@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Illness;
+import com.luv2code.illnesstracker.domain.illness.Illness;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.service.IllnessService;
 import com.luv2code.illnesstracker.service.PatientService;

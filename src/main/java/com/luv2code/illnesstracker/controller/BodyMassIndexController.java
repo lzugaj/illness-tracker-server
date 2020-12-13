@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.service.BodyMassIndexService;
 import com.luv2code.illnesstracker.service.PatientService;
@@ -34,6 +34,7 @@ public class BodyMassIndexController {
     @PostMapping("/patient/{id}")
     public ResponseEntity<?> save(@PathVariable Long id, @Valid @RequestBody final BodyMassIndex bodyMassIndex) {
         final Patient patient = patientService.findById(id);
+        LOGGER.info("Successfully founded Patient with id: ´{}´.", id);
 
         final BodyMassIndex newBodyMassIndex = bodyMassIndexService.save(patient, bodyMassIndex);
         LOGGER.info("Successfully save new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
@@ -56,7 +57,8 @@ public class BodyMassIndexController {
 
     @GetMapping("/patient/{id}")
     public ResponseEntity<?> findAllForPatient(@PathVariable final Long id) {
-        final Patient patient = patientService.findById(1L);
+        final Patient patient = patientService.findById(id);
+        LOGGER.info("Successfully founded Patient with id: ´{}´.", id);
 
         final List<BodyMassIndex> bodyMassIndexes = bodyMassIndexService.findAllForPatient(patient);
         LOGGER.info("Successfully founded all BodyMassIndexes for Patient with id: ´{}´.", id);
