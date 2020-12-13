@@ -3,6 +3,13 @@ insert into "ROLE" values (1, 'PATIENT');
 insert into "ROLE" values (2, 'DOCTOR');
 insert into "ROLE" values (3, 'ADMIN');
 
+insert into "ILLNESS" values (1, 'Body Mass Index', false);
+insert into "ILLNESS" values (2, 'Hypertension', false);
+insert into "ILLNESS" values (3, 'Hyperthyroidism', false);
+insert into "ILLNESS" values (4, 'Diabetes Mellitus Type II', false);
+insert into "ILLNESS" values (5, 'Painful Syndromes', false);
+insert into "ILLNESS" values (6, 'Gastro Esophageal Reflux', false);
+
 insert into "BODY_MASS_INDEX_INFO" values (1, 'Below 18.5', 'Underweight');
 insert into "BODY_MASS_INDEX_INFO" values (2, '18.5-24.9', 'Normal weight');
 insert into "BODY_MASS_INDEX_INFO" values (3, '25.0-29.9', 'Overweight');

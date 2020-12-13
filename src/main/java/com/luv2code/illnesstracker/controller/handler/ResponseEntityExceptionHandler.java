@@ -3,6 +3,7 @@ package com.luv2code.illnesstracker.controller.handler;
 import com.luv2code.illnesstracker.controller.handler.response.ApiResponse;
 import com.luv2code.illnesstracker.exception.EmailAlreadyExistsException;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
+import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -56,6 +57,20 @@ public class ResponseEntityExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(apiResponse, alreadyExists);
+    }
+
+    @ExceptionHandler(value = IllnessOptionIsNotSelectedException.class)
+    public ResponseEntity<ApiResponse> handleIllnessOptionIsNotSelectedRequestException(final IllnessOptionIsNotSelectedException exception, final HttpServletRequest httpServletRequest) {
+        final HttpStatus notAcceptable = HttpStatus.NOT_ACCEPTABLE;
+        final ApiResponse apiResponse = ApiResponse.builder()
+                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
+                .httpStatusCode(notAcceptable.value())
+                .httpStatus(notAcceptable)
+                .message(exception.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+
+        return new ResponseEntity<>(apiResponse, notAcceptable);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
