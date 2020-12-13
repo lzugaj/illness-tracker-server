@@ -24,6 +24,12 @@ create table "PATIENT" (
     gender varchar(10),
     date_of_registration timestamp,
     is_active boolean,
+    is_body_mass_index_active boolean,
+    is_hypertension_active boolean,
+    is_hyperthyroidism_active boolean,
+    is_diabetes_mellitus_type_II_active boolean,
+    is_painful_syndromes_active boolean,
+    is_gastro_esophageal_reflux_active boolean,
     primary key (id)
 );
 
@@ -34,6 +40,13 @@ create table "PATIENT_ROLE" (
     primary key (id),
     constraint fk_patient_role foreign key (patient_id) references "PATIENT" (id),
     constraint fk_role foreign key (role_id) references "ROLE" (id)
+);
+
+create table "ILLNESS" (
+    id bigserial not null,
+    name varchar(100),
+    is_selected boolean,
+    primary key (id)
 );
 
 create table "BODY_MASS_INDEX_INFO" (

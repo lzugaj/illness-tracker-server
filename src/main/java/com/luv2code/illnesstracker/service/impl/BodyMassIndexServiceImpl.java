@@ -4,6 +4,7 @@ import com.luv2code.illnesstracker.domain.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
+import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
 import com.luv2code.illnesstracker.repository.BodyMassIndexRepository;
 import com.luv2code.illnesstracker.service.BodyMassIndexInfoService;
 import com.luv2code.illnesstracker.service.BodyMassIndexService;
@@ -38,11 +39,16 @@ public class BodyMassIndexServiceImpl implements BodyMassIndexService {
 
     @Override
     public BodyMassIndex save(final Patient patient, final BodyMassIndex bodyMassIndex) {
-        setupVariablesCreate(patient, bodyMassIndex);
+        if (patient.getIsBodyMassIndexActive()) {
+            setupVariablesCreate(patient, bodyMassIndex);
 
-        final BodyMassIndex newBodyMassIndex = bodyMassIndexRepository.save(bodyMassIndex);
-        LOGGER.info("Saving new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
-        return newBodyMassIndex;
+            final BodyMassIndex newBodyMassIndex = bodyMassIndexRepository.save(bodyMassIndex);
+            LOGGER.info("Saving new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
+            return newBodyMassIndex;
+        } else {
+            LOGGER.error("Body Mass Index is not active for Patient with id: ´{}´.", patient.getId());
+            throw new IllnessOptionIsNotSelectedException("Patient", "isBodyMassIndexActive", String.valueOf(patient.getIsBodyMassIndexActive()));
+        }
     }
 
     @Override

@@ -63,6 +63,12 @@ public class PatientServiceImpl implements PatientService {
         LOGGER.info("Setting up Patient variables.");
         patient.setDateOfRegistration(LocalDateTime.now());
         patient.setIsActive(true);
+        patient.setIsBodyMassIndexActive(false);
+        patient.setIsHypertensionActive(false);
+        patient.setIsHyperthyroidismActive(false);
+        patient.setIsDiabetesMellitusTypeIIActive(false);
+        patient.setIsPainfulSyndromesActive(false);
+        patient.setIsGastroEsophagealRefluxActive(false);
         patient.setRoles(Collections.singletonList(role));
 
         LOGGER.info("Setting up Role variables.");

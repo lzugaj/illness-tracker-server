@@ -1,10 +1,15 @@
 package com.luv2code.illnesstracker.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import com.luv2code.illnesstracker.domain.enums.GenderType;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -52,7 +57,8 @@ public class Patient extends BaseEntity {
 
     @Column(name = "date_of_birth")
     @JsonFormat(pattern="yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull(message = "{validation.patient.date_of_birth.not_null}")
     private LocalDate dateOfBirth;
 
@@ -68,10 +74,30 @@ public class Patient extends BaseEntity {
     private GenderType gender;
 
     @Column(name = "date_of_registration")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfRegistration;
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @Column(name = "is_body_mass_index_active")
+    private Boolean isBodyMassIndexActive;
+
+    @Column(name = "is_hypertension_active")
+    private Boolean isHypertensionActive;
+
+    @Column(name = "is_hyperthyroidism_active")
+    private Boolean isHyperthyroidismActive;
+
+    @Column(name = "is_diabetes_mellitus_type_II_active")
+    private Boolean isDiabetesMellitusTypeIIActive;
+
+    @Column(name = "is_painful_syndromes_active")
+    private Boolean isPainfulSyndromesActive;
+
+    @Column(name = "is_gastro_esophageal_reflux_active")
+    private Boolean isGastroEsophagealRefluxActive;
 
     @ManyToMany
     @ToString.Exclude

@@ -31,9 +31,9 @@ public class BodyMassIndexController {
         this.patientService = patientService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody final BodyMassIndex bodyMassIndex) {
-        final Patient patient = patientService.findById(1L);
+    @PostMapping("/patient/{id}")
+    public ResponseEntity<?> save(@PathVariable Long id, @Valid @RequestBody final BodyMassIndex bodyMassIndex) {
+        final Patient patient = patientService.findById(id);
 
         final BodyMassIndex newBodyMassIndex = bodyMassIndexService.save(patient, bodyMassIndex);
         LOGGER.info("Successfully save new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
@@ -56,7 +56,6 @@ public class BodyMassIndexController {
 
     @GetMapping("/patient/{id}")
     public ResponseEntity<?> findAllForPatient(@PathVariable final Long id) {
-        // TODO: @lzugaj
         final Patient patient = patientService.findById(1L);
 
         final List<BodyMassIndex> bodyMassIndexes = bodyMassIndexService.findAllForPatient(patient);

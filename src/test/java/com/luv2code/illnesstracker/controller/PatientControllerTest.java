@@ -1,8 +1,8 @@
 package com.luv2code.illnesstracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.luv2code.illnesstracker.domain.enums.GenderType;
 import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.enums.GenderType;
 import com.luv2code.illnesstracker.dto.PatientDto;
 import com.luv2code.illnesstracker.dto.mapper.PatientMapper;
 import com.luv2code.illnesstracker.service.PatientService;
@@ -14,6 +14,7 @@ import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -35,17 +36,10 @@ public class PatientControllerTest {
     @MockBean
     private PatientMapper patientMapper;
 
-    private ObjectMapper objectMapper;
-
     private Patient firstPatient;
     private Patient secondPatient;
 
-    private PatientDto firstPatientDto;
-    private PatientDto secondPatientDto;
-
-    private List<Patient> patients;
-
-    private List<PatientDto> patientsDto;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
@@ -73,7 +67,7 @@ public class PatientControllerTest {
         secondPatient.setOib("68078116365");
         secondPatient.setGender(GenderType.FEMALE);
 
-        firstPatientDto = new PatientDto();
+        PatientDto firstPatientDto = new PatientDto();
         firstPatientDto.setId(1L);
         firstPatientDto.setFirstName("Michael");
         firstPatientDto.setLastName("Jordan");
@@ -83,7 +77,7 @@ public class PatientControllerTest {
         firstPatientDto.setOib("11238279839");
         firstPatientDto.setGender(GenderType.MALE);
 
-        secondPatientDto = new PatientDto();
+        PatientDto secondPatientDto = new PatientDto();
         secondPatientDto.setId(2L);
         secondPatientDto.setFirstName("Marie");
         secondPatientDto.setLastName("Curie");
@@ -93,11 +87,11 @@ public class PatientControllerTest {
         secondPatientDto.setOib("68078116365");
         secondPatientDto.setGender(GenderType.FEMALE);
 
-        patients = new ArrayList<>();
+        List<Patient> patients = new ArrayList<>();
         patients.add(firstPatient);
         patients.add(secondPatient);
 
-        patientsDto = new ArrayList<>();
+        List<PatientDto> patientsDto = new ArrayList<>();
         patientsDto.add(firstPatientDto);
         patientsDto.add(secondPatientDto);
 
@@ -110,7 +104,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void should_Return_Patient_By_Given_Id() throws Exception {
+    public void when_Id_Is_Valid_Then_Returns_Patient() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/patients/{id}", firstPatient.getId()))
                 .andDo(MockMvcResultHandlers.print())
@@ -120,7 +114,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void should_Return_Patients() throws Exception {
+    public void should_Returns_List_Of_Patients() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/patients"))
                 .andDo(MockMvcResultHandlers.print())
@@ -128,5 +122,20 @@ public class PatientControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*]", Matchers.hasSize(2)));
     }
 
-    // TODO: lzugaj: update
+    @Test
+    public void when_Id_Is_Valid_Then_Update_Patient() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.put("/patients/{id}", firstPatient.getId())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(secondPatient)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id", CoreMatchers.is(2)));
+    }
+
+    @Test
+    public void when_Id_Is_Valid_Then_Delete_Patient() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.delete("/patients/{id}", firstPatient.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
