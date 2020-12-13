@@ -1,6 +1,6 @@
-package com.luv2code.illnesstracker.service.impl;
+package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;

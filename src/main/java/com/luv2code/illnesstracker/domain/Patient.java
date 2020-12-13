@@ -9,6 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import com.luv2code.illnesstracker.domain.enums.GenderType;
+import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.Hypertension;
 import lombok.*;
 
 import javax.persistence.*;
@@ -110,5 +112,9 @@ public class Patient extends BaseEntity {
     @ToString.Exclude
     @ManyToMany(mappedBy = "patients")
     private List<BodyMassIndex> bodyMassIndexes;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "patients")
+    private List<Hypertension> hypertension;
 
 }

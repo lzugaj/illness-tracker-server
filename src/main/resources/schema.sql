@@ -2,8 +2,13 @@
 drop table if exists "ROLE";
 drop table if exists "PATIENT";
 drop table if exists "PATIENT_ROLE";
+drop table if exists "ILLNESS";
+drop table if exists "BODY_MASS_INDEX_INFO";
 drop table if exists "BODY_MASS_INDEX";
 drop table if exists "PATIENT_BODY_MASS_INDEX";
+drop table if exists "HYPERTENSION_INFO";
+drop table if exists "HYPERTENSION";
+drop table if exists "PATIENT_HYPERTENSION";
 
 -- create tables
 create table "ROLE" (
@@ -62,16 +67,41 @@ create table "BODY_MASS_INDEX" (
     weight decimal(5, 1) not null,
     index_value decimal(5, 1),
     date_of_performed_measurement timestamp,
-    is_active boolean,
     bmi_info_id bigint not null,
     primary key (id),
     constraint fk_bmi_info foreign key (bmi_info_id) references "BODY_MASS_INDEX_INFO" (id)
 );
 
 create table "PATIENT_BODY_MASS_INDEX" (
-    patient_id int not null,
-    bmi_id int not null,
-    primary key (patient_id, bmi_id),
-    constraint fk_patient_bmi foreign key (patient_id) references "PATIENT" (id),
-    constraint fk_bmi foreign key (bmi_id) references "BODY_MASS_INDEX" (id)
+   patient_id int not null,
+   bmi_id int not null,
+   primary key (patient_id, bmi_id),
+   constraint fk_patient_bmi foreign key (patient_id) references "PATIENT" (id),
+   constraint fk_bmi foreign key (bmi_id) references "BODY_MASS_INDEX" (id)
+);
+
+create table "HYPERTENSION_INFO" (
+    id bigserial not null,
+    systolic_range varchar(50) not null,
+    diastolic_range varchar(50) not null,
+    classification varchar(100) not null,
+    primary key (id)
+);
+
+create table "HYPERTENSION" (
+   id bigserial not null,
+   systolic int not null,
+   diastolic int not null,
+   date_of_performed_measurement timestamp,
+   hypertension_info_id bigint not null,
+   primary key (id),
+   constraint fk_hypertension_info foreign key (hypertension_info_id) references "HYPERTENSION_INFO" (id)
+);
+
+create table "PATIENT_HYPERTENSION" (
+   patient_id int not null,
+   hypertension_id int not null,
+   primary key (patient_id, hypertension_id),
+   constraint fk_patient_hypertension foreign key (patient_id) references "PATIENT" (id),
+   constraint fk_hypertension foreign key (hypertension_id) references "HYPERTENSION" (id)
 );

@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.luv2code.illnesstracker.domain.Illness;
+import com.luv2code.illnesstracker.domain.illness.Illness;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.Role;
 import com.luv2code.illnesstracker.domain.enums.GenderType;

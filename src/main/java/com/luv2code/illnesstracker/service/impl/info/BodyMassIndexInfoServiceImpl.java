@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.service.impl;
+package com.luv2code.illnesstracker.service.impl.info;
 
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;

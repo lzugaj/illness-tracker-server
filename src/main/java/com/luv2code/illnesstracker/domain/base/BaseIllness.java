@@ -15,7 +15,4 @@ public class BaseIllness extends BaseEntity {
     @Column(name = "date_of_performed_measurement")
     private LocalDateTime dateOfPerformedMeasurement;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
 }

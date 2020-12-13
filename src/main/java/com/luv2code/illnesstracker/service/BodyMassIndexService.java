@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.service;
 
-import com.luv2code.illnesstracker.domain.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.Patient;
 
 import java.util.List;
