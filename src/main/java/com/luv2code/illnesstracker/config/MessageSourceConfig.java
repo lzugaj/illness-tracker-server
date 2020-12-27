@@ -11,7 +11,7 @@ public class MessageSourceConfig {
 
     @Bean
     public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
@@ -19,7 +19,7 @@ public class MessageSourceConfig {
 
     @Bean
     public LocalValidatorFactoryBean validator() {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        final LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource());
         return bean;
     }

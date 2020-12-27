@@ -4,6 +4,7 @@ import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.repository.BodyMassIndexInfoRepository;
 import com.luv2code.illnesstracker.service.BodyMassIndexInfoService;
+import com.luv2code.illnesstracker.util.BodyMassIndexClassificationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,6 @@ import java.util.Optional;
 public class BodyMassIndexInfoServiceImpl implements BodyMassIndexInfoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BodyMassIndexInfoServiceImpl.class);
-
-    private static final String UNDERWEIGHT = "Underweight";
-    private static final String NORMAL_WEIGHT = "Normal weight";
-    private static final String OVERWEIGHT = "Overweight";
-    private static final String OBESITY_CLASS_I = "Obesity class I";
-    private static final String OBESITY_CLASS_II = "Obesity class II";
-    private static final String OBESITY_CLASS_III = "Obesity class III";
 
     private final BodyMassIndexInfoRepository bodyMassIndexInfoRepository;
 
@@ -59,17 +53,17 @@ public class BodyMassIndexInfoServiceImpl implements BodyMassIndexInfoService {
     public BodyMassIndexInfo findByIndexValue(final Double indexValue) {
         LOGGER.info("Searching BodyMassIndexInfo with index value: ´{}´.", indexValue);
         if (indexValue <= 18.5) {
-            return findByClassification(UNDERWEIGHT);
+            return findByClassification(BodyMassIndexClassificationUtil.UNDERWEIGHT);
         } else if (indexValue <= 24.9) {
-            return findByClassification(NORMAL_WEIGHT);
+            return findByClassification(BodyMassIndexClassificationUtil.NORMAL_WEIGHT);
         } else if (indexValue <= 29.9) {
-            return findByClassification(OVERWEIGHT);
+            return findByClassification(BodyMassIndexClassificationUtil.OVERWEIGHT);
         } else if (indexValue <= 34.9) {
-            return findByClassification(OBESITY_CLASS_I);
+            return findByClassification(BodyMassIndexClassificationUtil.OBESITY_CLASS_I);
         } else if (indexValue <= 39.9) {
-            return findByClassification(OBESITY_CLASS_II);
+            return findByClassification(BodyMassIndexClassificationUtil.OBESITY_CLASS_II);
         } else {
-            return findByClassification(OBESITY_CLASS_III);
+            return findByClassification(BodyMassIndexClassificationUtil.OBESITY_CLASS_III);
         }
     }
 }

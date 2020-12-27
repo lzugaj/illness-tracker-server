@@ -5,6 +5,7 @@ import com.luv2code.illnesstracker.domain.illness.Illness;
 import com.luv2code.illnesstracker.repository.IllnessRepository;
 import com.luv2code.illnesstracker.service.IllnessService;
 import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.util.IllnessTypeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,6 @@ import java.util.List;
 public class IllnessServiceImpl implements IllnessService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IllnessServiceImpl.class);
-
-    private static final String BODY_MASS_INDEX = "Body Mass Index";
-    private static final String HYPERTENSION = "Hypertension";
-    private static final String HYPERTHYROIDISM = "Hyperthyroidism";
-    private static final String DIABETES_MELLITUS_TYPE_II = "Diabetes Mellitus Type II";
-    private static final String PAINFUL_SYNDROMES = "Painful Syndromes";
-    private static final String GASTRO_ESOPHAGEAL_REFLUX = "Gastro Esophageal Reflux";
 
     private final IllnessRepository illnessRepository;
 
@@ -40,22 +34,22 @@ public class IllnessServiceImpl implements IllnessService {
         LOGGER.info("Setting visible illness for Patient with id: ´{}´.", patient.getId());
         for (Illness illness : illnesses) {
             switch (illness.getName()) {
-                case BODY_MASS_INDEX:
+                case IllnessTypeUtil.BODY_MASS_INDEX:
                     patient.setIsBodyMassIndexActive(getIllnessSelectedValue(illness));
                     break;
-                case HYPERTENSION:
+                case IllnessTypeUtil.HYPERTENSION:
                     patient.setIsHypertensionActive(getIllnessSelectedValue(illness));
                     break;
-                case HYPERTHYROIDISM:
+                case IllnessTypeUtil.HYPERTHYROIDISM:
                     patient.setIsHyperthyroidismActive(getIllnessSelectedValue(illness));
                     break;
-                case DIABETES_MELLITUS_TYPE_II:
+                case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
                     patient.setIsDiabetesMellitusTypeIIActive(getIllnessSelectedValue(illness));
                     break;
-                case PAINFUL_SYNDROMES:
+                case IllnessTypeUtil.PAINFUL_SYNDROMES:
                     patient.setIsPainfulSyndromesActive(getIllnessSelectedValue(illness));
                     break;
-                case GASTRO_ESOPHAGEAL_REFLUX:
+                case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
                     patient.setIsGastroEsophagealRefluxActive(getIllnessSelectedValue(illness));
                     break;
                 default:
@@ -63,6 +57,7 @@ public class IllnessServiceImpl implements IllnessService {
             }
         }
 
+        // TODO: @lzugaj => Refactor
         patientService.update(patient, patient);
         return illnesses;
     }
@@ -73,7 +68,7 @@ public class IllnessServiceImpl implements IllnessService {
 
     @Override
     public List<Illness> findAll() {
-        List<Illness> illnesses = illnessRepository.findAll();
+        final List<Illness> illnesses = illnessRepository.findAll();
         LOGGER.info("Searching all Illnesses.");
         return illnesses;
     }

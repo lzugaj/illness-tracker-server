@@ -4,6 +4,7 @@ import com.luv2code.illnesstracker.controller.handler.response.ApiResponse;
 import com.luv2code.illnesstracker.exception.EmailAlreadyExistsException;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
+import com.luv2code.illnesstracker.exception.PdfGenerateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -75,6 +76,20 @@ public class ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentNotValidRequestException(final MethodArgumentNotValidException exception, final HttpServletRequest httpServletRequest) {
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        final ApiResponse apiResponse = ApiResponse.builder()
+                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
+                .httpStatusCode(badRequest.value())
+                .httpStatus(badRequest)
+                .message(exception.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+
+        return new ResponseEntity<>(apiResponse, badRequest);
+    }
+
+    @ExceptionHandler(value = PdfGenerateException.class)
+    public ResponseEntity<ApiResponse> handleMethodArgumentNotValidRequestException(final PdfGenerateException exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         final ApiResponse apiResponse = ApiResponse.builder()
                 .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
