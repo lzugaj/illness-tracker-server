@@ -9,6 +9,7 @@ drop table if exists "PATIENT_BODY_MASS_INDEX";
 drop table if exists "HYPERTENSION_INFO";
 drop table if exists "HYPERTENSION";
 drop table if exists "PATIENT_HYPERTENSION";
+drop table if exists "DUMMY";
 
 -- create tables
 create table "ROLE" (
@@ -104,4 +105,10 @@ create table "PATIENT_HYPERTENSION" (
    primary key (patient_id, hypertension_id),
    constraint fk_patient_hypertension foreign key (patient_id) references "PATIENT" (id),
    constraint fk_hypertension foreign key (hypertension_id) references "HYPERTENSION" (id)
+);
+
+create sequence dummy_id_sequence start with 1 increment by 1 minvalue 1 maxvalue 99999;
+create table "DUMMY" (
+    id bigserial not null,
+    primary key (id)
 );
