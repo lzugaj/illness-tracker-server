@@ -1,105 +1,68 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
-import com.luv2code.illnesstracker.exception.EntityNotFoundException;
-import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
-import com.luv2code.illnesstracker.repository.BodyMassIndexRepository;
-import com.luv2code.illnesstracker.service.BodyMassIndexInfoService;
-import com.luv2code.illnesstracker.service.BodyMassIndexService;
+import com.luv2code.illnesstracker.repository.IllnessTypeRepository;
+import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
+import com.luv2code.illnesstracker.service.PatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class BodyMassIndexServiceImpl implements BodyMassIndexService {
+public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMassIndex> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BodyMassIndexServiceImpl.class);
 
-    private final BodyMassIndexRepository bodyMassIndexRepository;
-
-    private final BodyMassIndexInfoService bodyMassIndexInfoService;
+    private final IllnessTypeInfoService<BodyMassIndexInfo> illnessTypeInfoService;
 
     @Autowired
-    public BodyMassIndexServiceImpl(final BodyMassIndexRepository bodyMassIndexRepository,
-                                    final BodyMassIndexInfoService bodyMassIndexInfoService) {
-        this.bodyMassIndexRepository = bodyMassIndexRepository;
-        this.bodyMassIndexInfoService = bodyMassIndexInfoService;
+    public BodyMassIndexServiceImpl(final IllnessTypeRepository<BodyMassIndex> illnessTypeRepository,
+                                    final PatientService patientService,
+                                    @Qualifier("bodyMassIndexInfoServiceImpl") final IllnessTypeInfoService<BodyMassIndexInfo> illnessTypeInfoService) {
+        super(illnessTypeRepository, patientService, BodyMassIndex.class);
+        this.illnessTypeInfoService = illnessTypeInfoService;
     }
 
     @Override
     public BodyMassIndex save(final Patient patient, final BodyMassIndex bodyMassIndex) {
-        if (patient.getIsBodyMassIndexActive()) {
-            setupVariablesCreate(patient, bodyMassIndex);
-
-            final BodyMassIndex newBodyMassIndex = bodyMassIndexRepository.save(bodyMassIndex);
-            LOGGER.info("Saving new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
-            return newBodyMassIndex;
-        } else {
-            LOGGER.error("Body Mass Index is not active for Patient with id: ´{}´.", patient.getId());
-            throw new IllnessOptionIsNotSelectedException("Patient", "isBodyMassIndexActive", String.valueOf(patient.getIsBodyMassIndexActive()));
-        }
+        setupVariablesCreate(patient, bodyMassIndex);
+        return super.save(patient, bodyMassIndex);
     }
 
     @Override
-    public BodyMassIndex findById(Long id) {
-        final Optional<BodyMassIndex> searchedBodyMassIndex = bodyMassIndexRepository.findById(id);
-        if (searchedBodyMassIndex.isPresent()) {
-            LOGGER.info("Searching BodyMassIndex with id: ´{}´.", id);
-            return searchedBodyMassIndex.get();
-        } else {
-            LOGGER.error("BodyMassIndex was not founded with id: ´{}´.", id);
-            throw new EntityNotFoundException("BodyMassIndex", "id", String.valueOf(id));
-        }
+    public BodyMassIndex findById(final Long id) {
+        return super.findById(id);
     }
 
     @Override
     public List<BodyMassIndex> findAll() {
-        final List<BodyMassIndex> bodyMassIndexes = bodyMassIndexRepository.findAll();
-        LOGGER.info("Searching all BodyMassIndexes.");
-        return bodyMassIndexes;
+        return super.findAll();
     }
 
     @Override
     public List<BodyMassIndex> findAllForPatient(final Patient patient) {
-        final List<BodyMassIndex> bodyMassIndexes = findAll();
-        final List<BodyMassIndex> searchedBodyMassIndexes = new ArrayList<>();
-
-        LOGGER.info("Searching all BodyMassIndex for Patient with id: ´{}´.", patient.getId());
-        for (BodyMassIndex bodyMassIndex : bodyMassIndexes) {
-            for (Patient searchedPatient : bodyMassIndex.getPatients()) {
-                if (patient.getEmail().equals(searchedPatient.getEmail())) {
-                    searchedBodyMassIndexes.add(bodyMassIndex);
-                }
-            }
-        }
-
-        return searchedBodyMassIndexes;
+        return super.findAllForPatient(patient);
     }
 
     @Override
     public BodyMassIndex update(final BodyMassIndex oldBodyMassIndex, final BodyMassIndex newBodyMassIndex) {
         setupVariablesUpdate(oldBodyMassIndex, newBodyMassIndex);
-
-        bodyMassIndexRepository.save(oldBodyMassIndex);
-        LOGGER.info("Updating BodyMassIndex with id: ´{}´.", oldBodyMassIndex.getId());
-        return oldBodyMassIndex;
+        return super.update(oldBodyMassIndex, newBodyMassIndex);
     }
 
     @Override
-    public void delete(final BodyMassIndex bodyMassIndex) {
-        LOGGER.info("Deleting BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
-        bodyMassIndexRepository.delete(bodyMassIndex);
+    public void delete(BodyMassIndex illness) {
+        super.delete(illness);
     }
 
     private void setupVariablesCreate(final Patient patient, final BodyMassIndex bodyMassIndex) {
@@ -107,13 +70,17 @@ public class BodyMassIndexServiceImpl implements BodyMassIndexService {
         bodyMassIndex.setDateOfPerformedMeasurement(LocalDateTime.now());
 
         final List<BodyMassIndex> bodyMassIndexes = findAllForPatient(patient);
+        LOGGER.info("Successfully founded ´{}´ BodyMassIndex record for Patient with id: ´{}´.", bodyMassIndexes.size(), patient.getId());
+
         bodyMassIndexes.add(bodyMassIndex);
         bodyMassIndex.setPatients(Collections.singletonList(patient));
 
         final Double bmiIndexValue = calculateBMIIndexValue(bodyMassIndex);
         bodyMassIndex.setIndexValue(bmiIndexValue);
 
-        final BodyMassIndexInfo bodyMassIndexInfo = bodyMassIndexInfoService.findByIndexValue(bmiIndexValue);
+        final BodyMassIndexInfo bodyMassIndexInfo = illnessTypeInfoService.findByIndexValue(bmiIndexValue);
+        LOGGER.info("Successfully founded BodyMassIndexInfo with id: ´{}´.", bodyMassIndexInfo.getId());
+
         bodyMassIndex.setBodyMassIndexInfo(bodyMassIndexInfo);
         bodyMassIndexInfo.setBodyMassIndexes(Collections.singletonList(bodyMassIndex));
 
@@ -129,7 +96,9 @@ public class BodyMassIndexServiceImpl implements BodyMassIndexService {
         final Double bmiIndexValue = calculateBMIIndexValue(newBodyMassIndex);
         oldBodyMassIndex.setIndexValue(bmiIndexValue);
 
-        final BodyMassIndexInfo bodyMassIndexInfo = bodyMassIndexInfoService.findByIndexValue(bmiIndexValue);
+        final BodyMassIndexInfo bodyMassIndexInfo = illnessTypeInfoService.findByIndexValue(bmiIndexValue);
+        LOGGER.info("Successfully founded BodyMassIndexInfo with id: ´{}´.", bodyMassIndexInfo.getId());
+
         oldBodyMassIndex.setBodyMassIndexInfo(bodyMassIndexInfo);
         bodyMassIndexInfo.setBodyMassIndexes(Collections.singletonList(oldBodyMassIndex));
     }

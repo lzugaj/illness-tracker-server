@@ -37,11 +37,10 @@ RegistrationController {
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody final Patient patient) {
         final Patient newPatient = patientService.save(patient);
-        LOGGER.info("Successfully created new Patient with id: ´{}´.", newPatient.getId());
+        LOGGER.info("Successfully created new ´Patient´ with id: ´{}´.", newPatient.getId());
 
         final PatientDto dto = patientMapper.toPatientDto(newPatient);
-        LOGGER.info("Successfully mapped Patient to DTO.");
-
+        LOGGER.info("Successfully mapped ´Patient´ to DTO.");
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }

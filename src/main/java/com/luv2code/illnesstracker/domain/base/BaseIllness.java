@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = true)
-public class BaseIllness extends BaseEntity {
+public abstract class BaseIllness extends BaseEntity {
 
     @Column(name = "date_of_performed_measurement")
     private LocalDateTime dateOfPerformedMeasurement;

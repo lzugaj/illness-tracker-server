@@ -33,17 +33,17 @@ public class IllnessController {
     @PostMapping("/patient/{id}")
     public ResponseEntity<?> select(@PathVariable final Long id, @RequestBody final List<Illness> illnesses) {
         final Patient searchedPatient = patientService.findById(id);
-        LOGGER.info("Successfully founded Patient with id: ´{}´.", id);
+        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
 
         final List<Illness> searchedIllnesses = illnessService.select(searchedPatient, illnesses);
-        LOGGER.info("Successfully selected and set visible chosen Illness for Patient with id: ´{}´.", id);
+        LOGGER.info("Successfully selected and set visible chosen ´Illness´ for ´Patient´ with id: ´{}´.", id);
         return new ResponseEntity<>(searchedIllnesses, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
         final List<Illness> illnesses = illnessService.findAll();
-        LOGGER.info("Successfully founded all Illnesses.");
+        LOGGER.info("Successfully founded all ´Illness´.");
         return new ResponseEntity<>(illnesses, HttpStatus.OK);
     }
 }
