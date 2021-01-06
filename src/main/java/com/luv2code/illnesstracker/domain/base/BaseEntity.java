@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @MappedSuperclass
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
     @Id
     @Column(name = "id")

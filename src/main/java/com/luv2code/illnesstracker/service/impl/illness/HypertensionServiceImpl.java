@@ -1,114 +1,81 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.illness.Hypertension;
 import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.illness.Hypertension;
 import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
-import com.luv2code.illnesstracker.exception.EntityNotFoundException;
-import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
-import com.luv2code.illnesstracker.repository.HypertensionRepository;
-import com.luv2code.illnesstracker.service.HypertensionInfoService;
-import com.luv2code.illnesstracker.service.HypertensionService;
+import com.luv2code.illnesstracker.repository.IllnessTypeRepository;
+import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
+import com.luv2code.illnesstracker.service.PatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class HypertensionServiceImpl implements HypertensionService {
+public class HypertensionServiceImpl extends AbstractIllnessTypeService<Hypertension> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HypertensionServiceImpl.class);
 
-    private final HypertensionRepository hypertensionRepository;
-
-    private final HypertensionInfoService hypertensionInfoService;
+    private final IllnessTypeInfoService<HypertensionInfo> illnessTypeInfoService;
 
     @Autowired
-    public HypertensionServiceImpl(final HypertensionRepository hypertensionRepository,
-                                   final HypertensionInfoService hypertensionInfoService) {
-        this.hypertensionRepository = hypertensionRepository;
-        this.hypertensionInfoService = hypertensionInfoService;
+    public HypertensionServiceImpl(final IllnessTypeRepository<Hypertension> illnessTypeRepository,
+                                   final PatientService patientService,
+                                   @Qualifier("hypertensionInfoServiceImpl") final IllnessTypeInfoService<HypertensionInfo> illnessTypeInfoService) {
+        super(illnessTypeRepository, patientService, Hypertension.class);
+        this.illnessTypeInfoService = illnessTypeInfoService;
     }
 
     @Override
     public Hypertension save(final Patient patient, final Hypertension hypertension) {
-        if (patient.getIsHypertensionActive()) {
-            setupVariablesCreate(patient, hypertension);
-
-            final Hypertension newHypertension = hypertensionRepository.save(hypertension);
-            LOGGER.info("Saving new Hypertension with id: ´{}´.", hypertension.getId());
-            return newHypertension;
-        } else {
-            LOGGER.error("Hypertension is not active for Patient with id: ´{}´.", patient.getId());
-            throw new IllnessOptionIsNotSelectedException("Patient", "isHypertensionActive", String.valueOf(patient.getIsHypertensionActive()));
-        }
+        setupVariablesCreate(patient, hypertension);
+        return super.save(patient, hypertension);
     }
 
     @Override
     public Hypertension findById(final Long id) {
-        final Optional<Hypertension> searchedHypertension = hypertensionRepository.findById(id);
-        if (searchedHypertension.isPresent()) {
-            LOGGER.info("Searching Hypertension with id: ´{}´.", id);
-            return searchedHypertension.get();
-        } else {
-            LOGGER.error("Hypertension was not founded with id: ´{}´.", id);
-            throw new EntityNotFoundException("Hypertension", "id", String.valueOf(id));
-        }
+        return super.findById(id);
     }
 
     @Override
     public List<Hypertension> findAll() {
-        final List<Hypertension> hypertensives = hypertensionRepository.findAll();
-        LOGGER.info("Searching all Hypertensives.");
-        return hypertensives;
+        return super.findAll();
     }
 
     @Override
     public List<Hypertension> findAllForPatient(Patient patient) {
-        final List<Hypertension> hypertensives = findAll();
-        final List<Hypertension> searchedHypertension = new ArrayList<>();
-
-        LOGGER.info("Searching all Hypertension for Patient with id: ´{}´.", patient.getId());
-        for (Hypertension hypertension : hypertensives) {
-            for (Patient searchedPatient : hypertension.getPatients()) {
-                if (patient.getEmail().equals(searchedPatient.getEmail())) {
-                    searchedHypertension.add(hypertension);
-                }
-            }
-        }
-
-        return searchedHypertension;
+        return super.findAllForPatient(patient);
     }
 
     @Override
     public Hypertension update(final Hypertension oldHypertension, final Hypertension newHypertension) {
         setupVariablesUpdate(oldHypertension, newHypertension);
-
-        hypertensionRepository.save(oldHypertension);
-        LOGGER.info("Updating Hypertension with id: ´{}´.", oldHypertension.getId());
-        return oldHypertension;
+        return super.update(oldHypertension, newHypertension);
     }
 
     @Override
     public void delete(final Hypertension hypertension) {
-        LOGGER.info("Deleting Hypertension with id: ´{}´.", hypertension.getId());
-        hypertensionRepository.delete(hypertension);
+        super.delete(hypertension);
     }
 
     private void setupVariablesCreate(final Patient patient, final Hypertension hypertension) {
-        LOGGER.info("Setting up Hypertension variables.");
+        LOGGER.info("Setting up new Hypertension variables.");
         hypertension.setDateOfPerformedMeasurement(LocalDateTime.now());
 
         final List<Hypertension> hypertensives = findAllForPatient(patient);
+        LOGGER.info("Successfully founded ´{}´ Hypertension record for Patient with id: ´{}´.", hypertensives.size(), patient.getId());
+
         hypertensives.add(hypertension);
         hypertension.setPatients(Collections.singletonList(patient));
 
-        final HypertensionInfo hypertensionInfo = hypertensionInfoService.findByIndexValue(hypertension.getSystolic(), hypertension.getDiastolic());
+        final HypertensionInfo hypertensionInfo = illnessTypeInfoService.findByIndexValue(Double.valueOf(hypertension.getSystolic()), Double.valueOf(hypertension.getDiastolic()));
+        LOGGER.info("Successfully founded HypertensionInfo with id: ´{}´.", hypertensionInfo.getId());
+
         hypertension.setHypertensionInfo(hypertensionInfo);
         hypertensionInfo.setHypertension(Collections.singletonList(hypertension));
 
@@ -117,11 +84,13 @@ public class HypertensionServiceImpl implements HypertensionService {
     }
 
     private void setupVariablesUpdate(final Hypertension oldHypertension, final Hypertension newHypertension) {
-        LOGGER.info("Setting up Hypertension variables.");
+        LOGGER.info("Setting up old Hypertension variables.");
         oldHypertension.setSystolic(newHypertension.getSystolic());
         oldHypertension.setDiastolic(newHypertension.getDiastolic());
 
-        final HypertensionInfo hypertensionInfo = hypertensionInfoService.findByIndexValue(oldHypertension.getSystolic(), oldHypertension.getDiastolic());
+        final HypertensionInfo hypertensionInfo = illnessTypeInfoService.findByIndexValue(Double.valueOf(oldHypertension.getSystolic()), Double.valueOf(oldHypertension.getDiastolic()));
+        LOGGER.info("Successfully founded HypertensionInfo with id: ´{}´.", hypertensionInfo.getId());
+
         oldHypertension.setHypertensionInfo(hypertensionInfo);
         hypertensionInfo.setHypertension(Collections.singletonList(oldHypertension));
     }
