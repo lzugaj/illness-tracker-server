@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.domain.info;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.controller;
 
 import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
 import com.luv2code.illnesstracker.service.PatientService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
@@ -51,50 +51,50 @@ public class BodyMassIndexController {
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{id}")
-    public ResponseEntity<?> save(@PathVariable final Long id, @Valid @RequestBody final BodyMassIndex bodyMassIndex) {
-        final Patient patient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @PostMapping("/patient/{username}")
+    public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final BodyMassIndex bodyMassIndex) {
+        final Patient patient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
         final BodyMassIndex newBodyMassIndex = illnessTypeService.save(patient, bodyMassIndex);
-        LOGGER.info("Successfully save new ´BodyMassIndex´ with id: ´{}´.", bodyMassIndex.getId());
+        LOGGER.info("Successfully save new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
         return new ResponseEntity<>(newBodyMassIndex, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable final Long id) {
         final BodyMassIndex searchedBodyMassIndex = illnessTypeService.findById(id);
-        LOGGER.info("Successfully founded ´BodyMassIndex´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded BodyMassIndex with id: ´{}´.", id);
         return new ResponseEntity<>(searchedBodyMassIndex, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
         final List<BodyMassIndex> bodyMassIndexes = illnessTypeService.findAll();
-        LOGGER.info("Successfully founded all ´BodyMassIndex´.");
+        LOGGER.info("Successfully founded all BodyMassIndex.");
         return new ResponseEntity<>(bodyMassIndexes, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{id}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final Long id) {
-        final Patient patient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @GetMapping("/patient/{username}")
+    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
+        final Patient patient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
         final List<BodyMassIndex> bodyMassIndexes = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all ´BodyMassIndex´ for ´Patient´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded all BodyMassIndex for Patient with username: ´{}´.", username);
         return new ResponseEntity<>(bodyMassIndexes, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{id}/download/report")
-    public ResponseEntity<?> generateReport(@PathVariable final Long id) throws IOException {
-        final Patient patient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @GetMapping("/patient/{username}/download/report")
+    public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
+        final Patient patient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
         final String pdfReportName = pdfNamingService.generate(patient, BMI);
-        LOGGER.info("Successfully generated ´BodyMassIndex´ pdf name: ´{}´.", pdfReportName);
+        LOGGER.info("Successfully generated BodyMassIndex pdf name: ´{}´.", pdfReportName);
 
         final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.BODY_MASS_INDEX);
-        LOGGER.info("Successfully generated ´BodyMassIndex´ pdf file for ´Patient´ with id: ´{}´.", id);
+        LOGGER.info("Successfully generated BodyMassIndex pdf file for Patient with username: ´{}´.", username);
 
         // TODO: Refactor - folder on phone
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");
@@ -105,20 +105,20 @@ public class BodyMassIndexController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @Valid @RequestBody final BodyMassIndex newBodyMassIndex) {
         final BodyMassIndex oldBodyMassIndex = illnessTypeService.findById(id);
-        LOGGER.info("Successfully founded ´BodyMassIndex´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded BodyMassIndex with id: ´{}´.", id);
 
         final BodyMassIndex updatedBodyMassIndex = illnessTypeService.update(oldBodyMassIndex, newBodyMassIndex);
-        LOGGER.info("Successfully updated ´BodyMassIndex´ with id: ´{}´.", id);
+        LOGGER.info("Successfully updated BodyMassIndex with id: ´{}´.", id);
         return new ResponseEntity<>(updatedBodyMassIndex, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
         final BodyMassIndex searchedBodyMassIndex = illnessTypeService.findById(id);
-        LOGGER.info("Successfully founded ´BodyMassIndex´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded BodyMassIndex with id: ´{}´.", id);
 
         illnessTypeService.delete(searchedBodyMassIndex);
-        LOGGER.info("Successfully delete ´BodyMassIndex´ with id: ´{}´.", id);
+        LOGGER.info("Successfully delete BodyMassIndex with id: ´{}´.", id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

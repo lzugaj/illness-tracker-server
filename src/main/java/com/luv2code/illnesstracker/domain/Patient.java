@@ -9,8 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import com.luv2code.illnesstracker.domain.enums.GenderType;
-import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
-import com.luv2code.illnesstracker.domain.illness.Hypertension;
+import com.luv2code.illnesstracker.domain.enums.StatusType;
+import com.luv2code.illnesstracker.domain.illness.type.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,17 +45,16 @@ public class Patient extends BaseEntity {
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "{validation.patient.email.pattern}")
     private String email;
 
+    @Column(name = "username")
+    @NotBlank(message = "{validation.patient.username.not_blank}")
+    @Size(min = 5, message = "{validation.patient.username.size}")
+    private String username;
+
     @Column(name = "password")
     @NotBlank(message = "{validation.patient.password.not_blank}")
     @Size(min = 8, message = "{validation.patient.password.size}")
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "{validation.patient.password.pattern}")
     private String password;
-
-    @Column(name = "oib")
-    @NotBlank(message = "{validation.patient.oib.not_blank}")
-    @Size(max = 11, min = 11, message = "{validation.patient.oib.size}")
-    @Pattern(regexp = "^[0][1-9]\\d{10}$|^[1-9]\\d{10}$", message = "{validation.patient.oib.pattern}")
-    private String oib;
 
     @Column(name = "date_of_birth")
     @JsonFormat(pattern="yyyy-MM-dd")
@@ -80,8 +79,9 @@ public class Patient extends BaseEntity {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfRegistration;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private StatusType status;
 
     @Column(name = "is_body_mass_index_active")
     private Boolean isBodyMassIndexActive;
@@ -116,5 +116,21 @@ public class Patient extends BaseEntity {
     @ToString.Exclude
     @ManyToMany(mappedBy = "patients")
     private List<Hypertension> hypertension;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "patients")
+    private List<Hyperthyroidism> hyperthyroid;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "patients")
+    private List<DiabetesMellitusTypeII> diabetesMellitusTypesII;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "patients")
+    private List<PainfulSyndrome> painfulSyndromes;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "patients")
+    private List<GastroEsophagealReflux> gastroEsophagealRefluxes;
 
 }

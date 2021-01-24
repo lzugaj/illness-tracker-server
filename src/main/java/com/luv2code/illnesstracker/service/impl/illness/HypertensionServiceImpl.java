@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
 import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.domain.illness.Hypertension;
+import com.luv2code.illnesstracker.domain.illness.type.Hypertension;
 import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
-import com.luv2code.illnesstracker.repository.IllnessTypeRepository;
+import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
 import com.luv2code.illnesstracker.service.PatientService;
 import org.slf4j.Logger;

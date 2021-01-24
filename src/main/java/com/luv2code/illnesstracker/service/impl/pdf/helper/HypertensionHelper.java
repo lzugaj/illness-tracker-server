@@ -3,7 +3,7 @@ package com.luv2code.illnesstracker.service.impl.pdf.helper;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.domain.illness.Hypertension;
+import com.luv2code.illnesstracker.domain.illness.type.Hypertension;
 import com.luv2code.illnesstracker.service.FormatterService;
 import com.luv2code.illnesstracker.service.PdfCellBuilderService;
 import com.luv2code.illnesstracker.service.impl.formatter.FormatterServiceImpl;

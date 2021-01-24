@@ -10,6 +10,8 @@ public interface PatientService {
 
     Patient findById(final Long id);
 
+    Patient findByUsername(final String username);
+
     List<Patient> findAll();
 
     Patient update(final Patient oldPatient, final Patient newPatient);

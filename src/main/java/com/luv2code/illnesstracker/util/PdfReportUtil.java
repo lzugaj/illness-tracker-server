@@ -15,10 +15,9 @@ public class PdfReportUtil {
 
     // Patient
     public static final String PATIENT_FULL_NAME = "Full name: ";
-    public static final String PATIENT_OIB = "Oib: ";
     public static final String PATIENT_EMAIL = "Email: ";
-    public static final String PATIENT_PHONE_NUMBER = "Phone number: ";
     public static final String PATIENT_DATE_OF_BIRTH = "Date of birth: ";
+    public static final String PATIENT_PHONE_NUMBER = "Phone number: ";
 
     // Body Mass Index
     public static final String BODY_MASS_INDEX_TITLE = "Body mass index measurement history";
@@ -64,5 +63,85 @@ public class PdfReportUtil {
         hypertensionColumnNames.add(PdfReportUtil.HYPERTENSION_DIASTOLIC);
         hypertensionColumnNames.add(PdfReportUtil.HYPERTENSION_CLASSIFICATION);
         return hypertensionColumnNames;
+    }
+
+    // Hyperthyroidism
+    public static final String HYPERTHYROIDISM_TITLE = "Hyperthyroidism values measurement history";
+    public static final Integer HYPERTHYROIDISM_NUMBER_OF_COLUMNS = 5;
+
+    public static final String HYPERTHYROIDISM_ID = "Id";
+    public static final String HYPERTHYROIDISM_DATE_OF_MEASUREMENT = "Date of measurement";
+    public static final String HYPERTHYROIDISM_TSH = "TSH";
+    public static final String HYPERTHYROIDISM_FT3 = "FT3";
+    public static final String HYPERTHYROIDISM_FT4 = "FT4";
+
+    public static List<String> hyperthyroidismColumnNames;
+    public static List<String> getHyperthyroidismColumnNames() {
+        hyperthyroidismColumnNames = new ArrayList<>();
+        hyperthyroidismColumnNames.add(PdfReportUtil.HYPERTHYROIDISM_ID);
+        hyperthyroidismColumnNames.add(PdfReportUtil.HYPERTHYROIDISM_DATE_OF_MEASUREMENT);
+        hyperthyroidismColumnNames.add(PdfReportUtil.HYPERTHYROIDISM_TSH);
+        hyperthyroidismColumnNames.add(PdfReportUtil.HYPERTHYROIDISM_FT3);
+        hyperthyroidismColumnNames.add(PdfReportUtil.HYPERTHYROIDISM_FT4);
+        return hyperthyroidismColumnNames;
+    }
+
+    // Diabetes Mellitus Type II
+    public static final String DIABETES_MELLITUS_TYPE_II_TITLE = "Diabetes Mellitus Type II values measurement history";
+    public static final Integer DIABETES_MELLITUS_TYPE_II_NUMBER_OF_COLUMNS = 4;
+
+    public static final String DIABETES_MELLITUS_TYPE_II_ID = "Id";
+    public static final String DIABETES_MELLITUS_TYPE_II_DATE_OF_MEASUREMENT = "Date of measurement";
+    public static final String DIABETES_MELLITUS_TYPE_II_GUK0 = "GUK0";
+    public static final String DIABETES_MELLITUS_TYPE_II_GUK1 = "GUK1";
+
+    public static List<String> diabetesMellitusTypeIIColumnNames;
+    public static List<String> getDiabetesMellitusTypeIIColumnNames() {
+        diabetesMellitusTypeIIColumnNames = new ArrayList<>();
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_ID);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_DATE_OF_MEASUREMENT);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_GUK0);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_GUK1);
+        return diabetesMellitusTypeIIColumnNames;
+    }
+
+    // Painful Syndromes
+    public static final String PAINFUL_SYNDROMES_TITLE = "Painful Syndromes values measurement history";
+    public static final Integer PAINFUL_SYNDROMES_NUMBER_OF_COLUMNS = 5;
+
+    public static final String PAINFUL_SYNDROMES_ID = "Id";
+    public static final String PAINFUL_SYNDROMES_DATE_OF_MEASUREMENT = "Date of measurement";
+    public static final String PAINFUL_SYNDROMES_BODY_PART = "Body part";
+    public static final String PAINFUL_SYNDROMES_DESCRIPTION = "Description";
+    public static final String PAINFUL_SYNDROMES_VAS_VALUE = "VAS value";
+
+    public static List<String> painfulSyndromesColumnNames;
+    public static List<String> getPainfulSyndromesColumnNames() {
+        diabetesMellitusTypeIIColumnNames = new ArrayList<>();
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.PAINFUL_SYNDROMES_ID);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.PAINFUL_SYNDROMES_DATE_OF_MEASUREMENT);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.PAINFUL_SYNDROMES_BODY_PART);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.PAINFUL_SYNDROMES_DESCRIPTION);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.PAINFUL_SYNDROMES_VAS_VALUE);
+        return painfulSyndromesColumnNames;
+    }
+
+    // Gastro Esophageal Reflux
+    public static final String GASTRO_ESOPHAGEAL_REFLUX_TITLE = "Gastro Esophageal Reflux values measurement history";
+    public static final Integer GASTRO_ESOPHAGEAL_REFLUX_NUMBER_OF_COLUMNS = 4;
+
+    public static final String GASTRO_ESOPHAGEAL_REFLUX_ID = "Id";
+    public static final String GASTRO_ESOPHAGEAL_REFLUX_DATE_OF_MEASUREMENT = "Date of measurement";
+    public static final String GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_LAST_MEAL = "Date and time of last meal";
+    public static final String GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_ONSET_OF_SYMPTOMS = "Date and time of onset of symptoms";
+
+    public static List<String> gastroEsophagealRefluxColumnNames;
+    public static List<String> getGastroEsophagealRefluxColumnNames() {
+        diabetesMellitusTypeIIColumnNames = new ArrayList<>();
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_ID);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DATE_OF_MEASUREMENT);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_LAST_MEAL);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_ONSET_OF_SYMPTOMS);
+        return gastroEsophagealRefluxColumnNames;
     }
 }

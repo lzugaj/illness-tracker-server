@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.repository;
+package com.luv2code.illnesstracker.repository.info;
 
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

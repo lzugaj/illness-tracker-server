@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.controller;
 
 import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.domain.illness.Hypertension;
+import com.luv2code.illnesstracker.domain.illness.type.Hypertension;
 import com.luv2code.illnesstracker.service.*;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -48,50 +48,50 @@ public class HypertensionController {
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{id}")
-    public ResponseEntity<?> save(@PathVariable final Long id, @Valid @RequestBody final Hypertension hypertension) {
-        final Patient patient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @PostMapping("/patient/{username}")
+    public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final Hypertension hypertension) {
+        final Patient patient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
         final Hypertension newHypertension = illnessTypeService.save(patient, hypertension);
-        LOGGER.info("Successfully save new ´Hypertension´ with id: ´{}´.", hypertension.getId());
+        LOGGER.info("Successfully save new Hypertension with id: ´{}´.", hypertension.getId());
         return new ResponseEntity<>(newHypertension, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable final Long id) {
         final Hypertension searchedHypertension = illnessTypeService.findById(id);
-        LOGGER.info("Successfully founded ´Hypertension´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded Hypertension with id: ´{}´.", id);
         return new ResponseEntity<>(searchedHypertension, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
         final List<Hypertension> hypertensive = illnessTypeService.findAll();
-        LOGGER.info("Successfully founded all ´Hypertension´.");
+        LOGGER.info("Successfully founded all Hypertension.");
         return new ResponseEntity<>(hypertensive, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{id}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final Long id) {
-        final Patient patient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @GetMapping("/patient/{username}")
+    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
+        final Patient patient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
         final List<Hypertension> hypertensive = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all ´Hypertension´ for ´Patient´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded all Hypertension for Patient with username: ´{}´.", username);
         return new ResponseEntity<>(hypertensive, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{id}/download/report")
-    public ResponseEntity<?> generateReport(@PathVariable final Long id) throws IOException {
-        final Patient patient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @GetMapping("/patient/{username}/download/report")
+    public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
+        final Patient patient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
         final String pdfReportName = pdfNamingService.generate(patient, HYPERTENSION);
-        LOGGER.info("Successfully generated ´Hypertension´ pdf name: ´{}´.", pdfReportName);
+        LOGGER.info("Successfully generated Hypertension pdf name: ´{}´.", pdfReportName);
 
         final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.HYPERTENSION);
-        LOGGER.info("Successfully generated ´Hypertension´ pdf file for ´Patient´ with id: ´{}´.", id);
+        LOGGER.info("Successfully generated Hypertension pdf file for Patient with username: ´{}´.", username);
 
         // TODO: Refactor
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");
@@ -102,20 +102,20 @@ public class HypertensionController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id, @Valid @RequestBody final Hypertension newHypertension) {
         final Hypertension oldHypertension = illnessTypeService.findById(id);
-        LOGGER.info("Successfully founded ´Hypertension´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded Hypertension with id: ´{}´.", id);
 
         final Hypertension updatedHypertension = illnessTypeService.update(oldHypertension, newHypertension);
-        LOGGER.info("Successfully updated ´Hypertension´ with id: ´{}´.", id);
+        LOGGER.info("Successfully updated Hypertension with id: ´{}´.", id);
         return new ResponseEntity<>(updatedHypertension, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable final Long id) {
         final Hypertension searchedHypertension = illnessTypeService.findById(id);
-        LOGGER.info("Successfully founded ´Hypertension´ with id: ´{}´.", id);
+        LOGGER.info("Successfully founded Hypertension with id: ´{}´.", id);
 
         illnessTypeService.delete(searchedHypertension);
-        LOGGER.info("Successfully delete ´Hypertension´ with id: ´{}´.", id);
+        LOGGER.info("Successfully delete Hypertension with id: ´{}´.", id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

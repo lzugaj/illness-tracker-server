@@ -1,6 +1,7 @@
 package com.luv2code.illnesstracker.service.impl;
 
 import com.luv2code.illnesstracker.domain.Role;
+import com.luv2code.illnesstracker.domain.enums.RoleType;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.repository.RoleRepository;
 import com.luv2code.illnesstracker.service.RoleService;
@@ -31,20 +32,20 @@ public class RoleServiceImpl implements RoleService {
             LOGGER.info("Searching Role with id: ´{}´.", id);
             return searchedRole.get();
         } else {
-            LOGGER.error("Role was not founded with id: ´{}´.", id);
+            LOGGER.error("Not founded Role with id: ´{}´.", id);
             throw new EntityNotFoundException("Role", "id", String.valueOf(id));
         }
     }
 
     @Override
-    public Role findByName(final String name) {
-        final Optional<Role> searchedRole = roleRepository.findByName(name);
+    public Role findByName(final RoleType roleType) {
+        final Optional<Role> searchedRole = roleRepository.findByName(roleType);
         if (searchedRole.isPresent()) {
-            LOGGER.info("Searching Role with name: ´{}´.", name);
+            LOGGER.info("Searching Role with name: ´{}´.", roleType.name());
             return searchedRole.get();
         } else {
-            LOGGER.error("Role was not founded with name: ´{}´.", name);
-            throw new EntityNotFoundException("Role", "name", name);
+            LOGGER.error("Not founded Role with name: ´{}´.", roleType.name());
+            throw new EntityNotFoundException("Role", "name", roleType.name());
         }
     }
 

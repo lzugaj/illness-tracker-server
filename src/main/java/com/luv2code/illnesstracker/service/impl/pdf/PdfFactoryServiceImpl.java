@@ -7,9 +7,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.exception.PdfGenerateException;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
-import com.luv2code.illnesstracker.service.impl.pdf.helper.BodyMassIndexHelper;
-import com.luv2code.illnesstracker.service.impl.pdf.helper.HeaderAndFooterEventHelper;
-import com.luv2code.illnesstracker.service.impl.pdf.helper.HypertensionHelper;
+import com.luv2code.illnesstracker.service.impl.pdf.helper.*;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
 import com.luv2code.illnesstracker.util.PdfReportUtil;
 import org.slf4j.Logger;
@@ -47,23 +45,37 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                     table = new PdfPTable(PdfReportUtil.BMI_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 4, 6});
-
                     createTable(document, table, patient, illnessName, PdfReportUtil.getBMIColumnNames());
                     break;
                 case IllnessTypeUtil.HYPERTENSION:
                     table = new PdfPTable(PdfReportUtil.HYPERTENSION_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 7});
-
                     createTable(document, table, patient, illnessName, PdfReportUtil.getHypertensionColumnNames());
                     break;
                 case IllnessTypeUtil.HYPERTHYROIDISM:
+                    table = new PdfPTable(PdfReportUtil.HYPERTHYROIDISM_NUMBER_OF_COLUMNS);
+                    table.setWidthPercentage(95);
+                    table.setWidths(new int[]{1, 6, 3, 3, 3});
+                    createTable(document, table, patient, illnessName, PdfReportUtil.getHyperthyroidismColumnNames());
                     break;
                 case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
+                    table = new PdfPTable(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_NUMBER_OF_COLUMNS);
+                    table.setWidthPercentage(95);
+                    table.setWidths(new int[]{1, 6, 3, 3});
+                    createTable(document, table, patient, illnessName, PdfReportUtil.getDiabetesMellitusTypeIIColumnNames());
                     break;
                 case IllnessTypeUtil.PAINFUL_SYNDROMES:
+                    table = new PdfPTable(PdfReportUtil.PAINFUL_SYNDROMES_NUMBER_OF_COLUMNS);
+                    table.setWidthPercentage(95);
+                    table.setWidths(new int[]{1, 6, 6, 6, 3});
+                    createTable(document, table, patient, illnessName, PdfReportUtil.getPainfulSyndromesColumnNames());
                     break;
                 case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
+                    table = new PdfPTable(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_NUMBER_OF_COLUMNS);
+                    table.setWidthPercentage(95);
+                    table.setWidths(new int[]{1, 6, 6, 6});
+                    createTable(document, table, patient, illnessName, PdfReportUtil.getGastroEsophagealRefluxColumnNames());
                     break;
             }
 
@@ -90,15 +102,19 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                 BodyMassIndexHelper.populate(table, patient);
                 break;
             case IllnessTypeUtil.HYPERTENSION:
-                HypertensionHelper.populate(table, patient);;
+                HypertensionHelper.populate(table, patient);
                 break;
             case IllnessTypeUtil.HYPERTHYROIDISM:
+                HyperthyroidismHelper.populate(table, patient);
                 break;
             case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
+                DiabetesMellitusTypeIIHelper.populate(table, patient);
                 break;
             case IllnessTypeUtil.PAINFUL_SYNDROMES:
+                PatientSyndromeHelper.populate(table, patient);
                 break;
             case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
+                GastroEsophagealRefluxHelper.populate(table, patient);
                 break;
         }
 
@@ -125,12 +141,16 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                 title = PdfReportUtil.HYPERTENSION_TITLE;
                 break;
             case IllnessTypeUtil.HYPERTHYROIDISM:
+                title = PdfReportUtil.HYPERTHYROIDISM_TITLE;
                 break;
             case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
+                title = PdfReportUtil.DIABETES_MELLITUS_TYPE_II_TITLE;
                 break;
             case IllnessTypeUtil.PAINFUL_SYNDROMES:
+                title = PdfReportUtil.PAINFUL_SYNDROMES_TITLE;
                 break;
             case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
+                title = PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_TITLE;
                 break;
         }
 
@@ -141,13 +161,11 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
         final Font dynamicTextFont = FontFactory.getFont(FontFactory.HELVETICA, 14);
         final Paragraph fullName = new Paragraph(PdfReportUtil.PATIENT_FULL_NAME + getPatientFullName(patient), dynamicTextFont);
         final Paragraph dateOfBirth = new Paragraph(PdfReportUtil.PATIENT_DATE_OF_BIRTH + getPatientDateOfBirth(patient), dynamicTextFont);
-        final Paragraph oib = new Paragraph(PdfReportUtil.PATIENT_OIB + patient.getOib(), dynamicTextFont);
         final Paragraph email = new Paragraph(PdfReportUtil.PATIENT_EMAIL + patient.getEmail(), dynamicTextFont);
         final Paragraph phoneNumber = new Paragraph(PdfReportUtil.PATIENT_PHONE_NUMBER + patient.getPhoneNumber(), dynamicTextFont);
 
         document.add(fullName);
         document.add(dateOfBirth);
-        document.add(oib);
         document.add(email);
         document.add(phoneNumber);
 

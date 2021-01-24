@@ -2,7 +2,7 @@ package com.luv2code.illnesstracker.service.impl.info;
 
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
-import com.luv2code.illnesstracker.repository.IllnessTypeInfoRepository;
+import com.luv2code.illnesstracker.repository.info.IllnessTypeInfoRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
