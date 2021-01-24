@@ -2,7 +2,7 @@ package com.luv2code.illnesstracker.service.impl.illness;
 
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.illness.Illness;
-import com.luv2code.illnesstracker.repository.IllnessRepository;
+import com.luv2code.illnesstracker.repository.illness.IllnessRepository;
 import com.luv2code.illnesstracker.service.IllnessService;
 import com.luv2code.illnesstracker.service.PatientService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;

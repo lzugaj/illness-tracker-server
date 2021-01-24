@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.controller.handler;
 
 import com.luv2code.illnesstracker.controller.handler.response.ApiResponse;
-import com.luv2code.illnesstracker.exception.EmailAlreadyExistsException;
+import com.luv2code.illnesstracker.exception.UsernameAlreadyExistsException;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
 import com.luv2code.illnesstracker.exception.PdfGenerateException;
@@ -21,84 +21,48 @@ public class ResponseEntityExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ApiResponse> handleGlobalRequestException(final Exception exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
-        final ApiResponse apiResponse = ApiResponse.builder()
-                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
-                .httpStatusCode(internalServerError.value())
-                .httpStatus(internalServerError)
-                .message(exception.getMessage())
-                .path(httpServletRequest.getRequestURI())
-                .build();
-
-        return new ResponseEntity<>(apiResponse, internalServerError);
+        return createApiResponseMessage(internalServerError, exception, httpServletRequest);
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<ApiResponse> handleEntityNotFoundRequestException(final EntityNotFoundException exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus notFound = HttpStatus.NOT_FOUND;
-        final ApiResponse apiResponse = ApiResponse.builder()
-                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
-                .httpStatusCode(notFound.value())
-                .httpStatus(notFound)
-                .message(exception.getMessage())
-                .path(httpServletRequest.getRequestURI())
-                .build();
-
-        return new ResponseEntity<>(apiResponse, notFound);
+        return createApiResponseMessage(notFound, exception, httpServletRequest);
     }
 
-    @ExceptionHandler(value = EmailAlreadyExistsException.class)
-    public ResponseEntity<ApiResponse> handleEmailAlreadyExistsRequestException(final EmailAlreadyExistsException exception, final HttpServletRequest httpServletRequest) {
+    @ExceptionHandler(value = UsernameAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse> handleEmailAlreadyExistsRequestException(final UsernameAlreadyExistsException exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus alreadyExists = HttpStatus.CONFLICT;
-        final ApiResponse apiResponse = ApiResponse.builder()
-                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
-                .httpStatusCode(alreadyExists.value())
-                .httpStatus(alreadyExists)
-                .message(exception.getMessage())
-                .path(httpServletRequest.getRequestURI())
-                .build();
-
-        return new ResponseEntity<>(apiResponse, alreadyExists);
+        return createApiResponseMessage(alreadyExists, exception, httpServletRequest);
     }
 
     @ExceptionHandler(value = IllnessOptionIsNotSelectedException.class)
     public ResponseEntity<ApiResponse> handleIllnessOptionIsNotSelectedRequestException(final IllnessOptionIsNotSelectedException exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus notAcceptable = HttpStatus.NOT_ACCEPTABLE;
-        final ApiResponse apiResponse = ApiResponse.builder()
-                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
-                .httpStatusCode(notAcceptable.value())
-                .httpStatus(notAcceptable)
-                .message(exception.getMessage())
-                .path(httpServletRequest.getRequestURI())
-                .build();
-
-        return new ResponseEntity<>(apiResponse, notAcceptable);
+        return createApiResponseMessage(notAcceptable, exception, httpServletRequest);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentNotValidRequestException(final MethodArgumentNotValidException exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        final ApiResponse apiResponse = ApiResponse.builder()
-                .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
-                .httpStatusCode(badRequest.value())
-                .httpStatus(badRequest)
-                .message(exception.getMessage())
-                .path(httpServletRequest.getRequestURI())
-                .build();
-
-        return new ResponseEntity<>(apiResponse, badRequest);
+        return createApiResponseMessage(badRequest, exception, httpServletRequest);
     }
 
     @ExceptionHandler(value = PdfGenerateException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentNotValidRequestException(final PdfGenerateException exception, final HttpServletRequest httpServletRequest) {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        return createApiResponseMessage(badRequest, exception, httpServletRequest);
+    }
+
+    private ResponseEntity<ApiResponse> createApiResponseMessage(final HttpStatus httpStatus, final Exception exception, final HttpServletRequest httpServletRequest) {
         final ApiResponse apiResponse = ApiResponse.builder()
                 .zonedDateTime(ZonedDateTime.now(ZoneId.of("Z")))
-                .httpStatusCode(badRequest.value())
-                .httpStatus(badRequest)
+                .httpStatusCode(httpStatus.value())
+                .httpStatus(httpStatus)
                 .message(exception.getMessage())
                 .path(httpServletRequest.getRequestURI())
                 .build();
 
-        return new ResponseEntity<>(apiResponse, badRequest);
+        return new ResponseEntity<>(apiResponse, httpStatus);
     }
 }

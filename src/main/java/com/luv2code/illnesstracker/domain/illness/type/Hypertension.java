@@ -1,15 +1,13 @@
-package com.luv2code.illnesstracker.domain.illness;
+package com.luv2code.illnesstracker.domain.illness.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
 import lombok.*;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity

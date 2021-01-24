@@ -1,7 +1,6 @@
-package com.luv2code.illnesstracker.repository;
+package com.luv2code.illnesstracker.repository.info;
 
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository

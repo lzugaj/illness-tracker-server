@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
 import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.domain.illness.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
-import com.luv2code.illnesstracker.repository.IllnessTypeRepository;
+import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
 import com.luv2code.illnesstracker.service.PatientService;
 import org.slf4j.Logger;
@@ -66,7 +66,7 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
     }
 
     private void setupVariablesCreate(final Patient patient, final BodyMassIndex bodyMassIndex) {
-        LOGGER.info("Setting up BodyMassIndex variables.");
+        LOGGER.info("Setting up BodyMassIndex variables for Patient with id: ´{}´.", patient.getId());
         bodyMassIndex.setDateOfPerformedMeasurement(LocalDateTime.now());
 
         final List<BodyMassIndex> bodyMassIndexes = findAllForPatient(patient);
@@ -83,8 +83,6 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
 
         bodyMassIndex.setBodyMassIndexInfo(bodyMassIndexInfo);
         bodyMassIndexInfo.setBodyMassIndexes(Collections.singletonList(bodyMassIndex));
-
-        LOGGER.info("Setting up Patient variables.");
         patient.setBodyMassIndexes(bodyMassIndexes);
     }
 
@@ -104,10 +102,9 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
     }
 
     private Double calculateBMIIndexValue(final BodyMassIndex bodyMassIndex) {
-        final double bmiIndexValue = (bodyMassIndex.getWeight() / Math.pow(bodyMassIndex.getHeight(), 2)) * 10000;
-        final BigDecimal bd = new BigDecimal(bmiIndexValue).setScale(1, RoundingMode.HALF_UP);
-        LOGGER.info("Calculated BodyMassIndex values is: ´{}´.", bd);
-
-        return bd.doubleValue();
+        final double bmiDivisionValue = (bodyMassIndex.getWeight() / Math.pow(bodyMassIndex.getHeight(), 2)) * 10000;
+        final BigDecimal bmiIndexValue = new BigDecimal(bmiDivisionValue).setScale(1, RoundingMode.HALF_UP);
+        LOGGER.info("Calculated BodyMassIndex values is: ´{}´.", bmiIndexValue);
+        return bmiIndexValue.doubleValue();
     }
 }

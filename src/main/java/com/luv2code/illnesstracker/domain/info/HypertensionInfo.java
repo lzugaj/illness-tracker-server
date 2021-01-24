@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.domain.info;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.luv2code.illnesstracker.domain.illness.Hypertension;
+import com.luv2code.illnesstracker.domain.illness.type.Hypertension;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
 import lombok.*;
 

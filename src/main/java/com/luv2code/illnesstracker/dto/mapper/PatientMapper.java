@@ -16,8 +16,8 @@ public interface PatientMapper {
             @Mapping(target = "firstName", source = "patient.firstName"),
             @Mapping(target = "lastName", source = "patient.lastName"),
             @Mapping(target = "email", source = "patient.email"),
+            @Mapping(target = "username", source = "patient.username"),
             @Mapping(target = "phoneNumber", source = "patient.phoneNumber"),
-            @Mapping(target = "oib", source = "patient.oib"),
             @Mapping(target = "dateOfBirth", source = "patient.dateOfBirth"),
             @Mapping(target = "gender", source = "patient.gender")
     })
@@ -28,8 +28,8 @@ public interface PatientMapper {
             @Mapping(target = "firstName", source = "patient.firstName"),
             @Mapping(target = "lastName", source = "patient.lastName"),
             @Mapping(target = "email", source = "patient.email"),
+            @Mapping(target = "username", source = "patient.username"),
             @Mapping(target = "phoneNumber", source = "patient.phoneNumber"),
-            @Mapping(target = "oib", source = "patient.oib"),
             @Mapping(target = "dateOfBirth", source = "patient.dateOfBirth"),
             @Mapping(target = "gender", source = "patient.gender")
     })

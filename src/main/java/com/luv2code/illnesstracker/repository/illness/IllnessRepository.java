@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.repository;
+package com.luv2code.illnesstracker.repository.illness;
 
 import com.luv2code.illnesstracker.domain.illness.Illness;
 import org.springframework.data.jpa.repository.JpaRepository;

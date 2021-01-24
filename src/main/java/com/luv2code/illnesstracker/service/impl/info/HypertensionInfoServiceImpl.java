@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.service.impl.info;
 
 import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
-import com.luv2code.illnesstracker.repository.IllnessTypeInfoRepository;
+import com.luv2code.illnesstracker.repository.info.IllnessTypeInfoRepository;
 import com.luv2code.illnesstracker.util.HypertensionClassificationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

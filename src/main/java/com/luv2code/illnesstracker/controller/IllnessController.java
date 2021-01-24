@@ -30,20 +30,20 @@ public class IllnessController {
         this.patientService = patientService;
     }
 
-    @PostMapping("/patient/{id}")
-    public ResponseEntity<?> select(@PathVariable final Long id, @RequestBody final List<Illness> illnesses) {
-        final Patient searchedPatient = patientService.findById(id);
-        LOGGER.info("Successfully founded ´Patient´ with id: ´{}´.", id);
+    @PostMapping("/patient/{username}")
+    public ResponseEntity<?> select(@PathVariable final String username, @RequestBody final List<Illness> illnesses) {
+        final Patient searchedPatient = patientService.findByUsername(username);
+        LOGGER.info("Successfully founded ´Patient´ with username: ´{}´.", username);
 
         final List<Illness> searchedIllnesses = illnessService.select(searchedPatient, illnesses);
-        LOGGER.info("Successfully selected and set visible chosen ´Illness´ for ´Patient´ with id: ´{}´.", id);
+        LOGGER.info("Successfully selected and set visible chosen Illness for Patient with username: ´{}´.", username);
         return new ResponseEntity<>(searchedIllnesses, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
         final List<Illness> illnesses = illnessService.findAll();
-        LOGGER.info("Successfully founded all ´Illness´.");
+        LOGGER.info("Successfully founded all Illnesses.");
         return new ResponseEntity<>(illnesses, HttpStatus.OK);
     }
 }

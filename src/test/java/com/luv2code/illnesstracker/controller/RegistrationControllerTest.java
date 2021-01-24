@@ -45,9 +45,9 @@ public class RegistrationControllerTest {
         patient.setFirstName("Michael");
         patient.setLastName("Jordan");
         patient.setEmail("michael.jordan23@gmail.com");
+        patient.setUsername("michael");
         patient.setPassword("theGoat23");
         patient.setDateOfBirth(LocalDate.parse("1996-09-12"));
-        patient.setOib("12821007094");
         patient.setPhoneNumber("+385987654321");
         patient.setGender(GenderType.MALE);
 
@@ -56,8 +56,8 @@ public class RegistrationControllerTest {
         patientDto.setFirstName("Michael");
         patientDto.setLastName("Jordan");
         patientDto.setEmail("michael.jordan23@gmail.com");
+        patientDto.setUsername("michael");
         patientDto.setDateOfBirth(LocalDate.parse("1996-09-12"));
-        patientDto.setOib("12821007094");
         patientDto.setPhoneNumber("+385987654321");
         patientDto.setGender(GenderType.MALE);
 

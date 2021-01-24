@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.domain.illness;
+package com.luv2code.illnesstracker.domain.illness.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.luv2code.illnesstracker.domain.Patient;

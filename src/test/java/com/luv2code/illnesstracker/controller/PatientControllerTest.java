@@ -50,10 +50,10 @@ public class PatientControllerTest {
         firstPatient.setFirstName("Michael");
         firstPatient.setLastName("Jordan");
         firstPatient.setEmail("michael.jordan23@gmail.com");
+        firstPatient.setUsername("michael");
         firstPatient.setPassword("TheGoat23");
         firstPatient.setDateOfBirth(LocalDate.parse("1987-12-12"));
         firstPatient.setPhoneNumber("+385912346789");
-        firstPatient.setOib("11238279839");
         firstPatient.setGender(GenderType.MALE);
 
         secondPatient = new Patient();
@@ -61,10 +61,10 @@ public class PatientControllerTest {
         secondPatient.setFirstName("Marie");
         secondPatient.setLastName("Curie");
         secondPatient.setEmail("marie.curie@gmail.com");
+        secondPatient.setUsername("marie.curie");
         secondPatient.setPassword("NuclearPower");
         secondPatient.setDateOfBirth(LocalDate.parse("1987-12-12"));
         secondPatient.setPhoneNumber("+385985661342");
-        secondPatient.setOib("68078116365");
         secondPatient.setGender(GenderType.FEMALE);
 
         PatientDto firstPatientDto = new PatientDto();
@@ -72,9 +72,9 @@ public class PatientControllerTest {
         firstPatientDto.setFirstName("Michael");
         firstPatientDto.setLastName("Jordan");
         firstPatientDto.setEmail("michael.jordan23@gmail.com");
+        firstPatientDto.setUsername("michael");
         firstPatientDto.setDateOfBirth(LocalDate.parse("1987-12-12"));
         firstPatientDto.setPhoneNumber("+385912346789");
-        firstPatientDto.setOib("11238279839");
         firstPatientDto.setGender(GenderType.MALE);
 
         PatientDto secondPatientDto = new PatientDto();
@@ -82,9 +82,9 @@ public class PatientControllerTest {
         secondPatientDto.setFirstName("Marie");
         secondPatientDto.setLastName("Curie");
         secondPatientDto.setEmail("marie.curie@gmail.com");
+        secondPatientDto.setUsername("marie.curie");
         secondPatientDto.setDateOfBirth(LocalDate.parse("1987-12-12"));
         secondPatientDto.setPhoneNumber("+385985661342");
-        secondPatientDto.setOib("68078116365");
         secondPatientDto.setGender(GenderType.FEMALE);
 
         List<Patient> patients = new ArrayList<>();
@@ -96,10 +96,11 @@ public class PatientControllerTest {
         patientsDto.add(secondPatientDto);
 
         BDDMockito.given(patientService.findById(firstPatient.getId())).willReturn(firstPatient);
-        BDDMockito.given(patientMapper.toPatientDto(firstPatient)).willReturn(firstPatientDto);
         BDDMockito.given(patientService.findAll()).willReturn(patients);
-        BDDMockito.given(patientMapper.toPatientsDto(patients)).willReturn(patientsDto);
         BDDMockito.given(patientService.update(firstPatient, secondPatient)).willReturn(secondPatient);
+
+        BDDMockito.given(patientMapper.toPatientDto(firstPatient)).willReturn(firstPatientDto);
+        BDDMockito.given(patientMapper.toPatientsDto(patients)).willReturn(patientsDto);
         BDDMockito.given(patientMapper.toPatientDto(secondPatient)).willReturn(secondPatientDto);
     }
 

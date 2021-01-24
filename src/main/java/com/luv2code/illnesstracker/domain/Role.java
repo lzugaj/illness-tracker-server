@@ -2,11 +2,10 @@ package com.luv2code.illnesstracker.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.luv2code.illnesstracker.domain.base.BaseEntity;
+import com.luv2code.illnesstracker.domain.enums.RoleType;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor
@@ -19,7 +18,12 @@ import java.util.List;
 @Table(name = "ROLE")
 public class Role extends BaseEntity {
 
-    private String name;
+    @Column(name = "name")
+    @Enumerated(EnumType.STRING)
+    private RoleType name;
+
+    @Column(name = "description")
+    private String description;
 
     @JsonIgnore
     @ToString.Exclude

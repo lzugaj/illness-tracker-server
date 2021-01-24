@@ -4,7 +4,7 @@ import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
-import com.luv2code.illnesstracker.repository.IllnessTypeRepository;
+import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
 import com.luv2code.illnesstracker.service.PatientService;
 import org.slf4j.Logger;
@@ -88,7 +88,7 @@ public abstract class AbstractIllnessTypeService<T extends BaseIllness> implemen
     public T update(final T oldIllness, final T newIllness) {
         illnessTypeRepository.save(oldIllness);
         LOGGER.info("Updating ´{}´ with id: ´{}´.", getIllnessName(illnessClass), oldIllness.getId());
-        return newIllness;
+        return oldIllness;
     }
 
     @Override
