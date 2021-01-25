@@ -1,13 +1,14 @@
 package com.luv2code.illnesstracker.domain.illness.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "PAINFUL_SYNDROME")
 @EqualsAndHashCode(callSuper = true)
-public class PainfulSyndrome extends BaseIllness {
+public class PainfulSyndrome extends BaseIllness implements Serializable {
 
     @Column(name = "body_part")
     @NotBlank(message = "{validation.ps.body_part.not_blank}")
@@ -37,9 +38,9 @@ public class PainfulSyndrome extends BaseIllness {
     @JsonIgnore
     @ToString.Exclude
     @JoinTable(
-            name = "PATIENT_PAINFUL_SYNDROME",
+            name = "USER_PAINFUL_SYNDROME",
             joinColumns = @JoinColumn(name = "ps_id"),
-            inverseJoinColumns = @JoinColumn(name = "patient_id"))
-    private List<Patient> patients;
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 
 }

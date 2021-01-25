@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.GastroEsophagealReflux;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.PdfNamingService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
@@ -34,7 +34,7 @@ public class GastroEsophagealRefluxController {
 
     private final IllnessTypeService<GastroEsophagealReflux> illnessTypeService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     private final PdfNamingService pdfNamingService;
 
@@ -42,21 +42,21 @@ public class GastroEsophagealRefluxController {
 
     @Autowired
     public GastroEsophagealRefluxController(@Qualifier("gastroEsophagealRefluxServiceImpl") final IllnessTypeService<GastroEsophagealReflux> illnessTypeService,
-                                     final PatientService patientService,
+                                     final UserService userService,
                                      final PdfNamingService pdfNamingService,
                                      final PdfFactoryService pdfFactoryService) {
         this.illnessTypeService = illnessTypeService;
-        this.patientService = patientService;
+        this.userService = userService;
         this.pdfNamingService = pdfNamingService;
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{username}")
+    @PostMapping("/user/{username}")
     public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final GastroEsophagealReflux gastroEsophagealReflux) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final GastroEsophagealReflux newGastroEsophagealReflux = illnessTypeService.save(patient, gastroEsophagealReflux);
+        final GastroEsophagealReflux newGastroEsophagealReflux = illnessTypeService.save(user, gastroEsophagealReflux);
         LOGGER.info("Successfully save new GastroEsophagealReflux with id: ´{}´.", gastroEsophagealReflux.getId());
         return new ResponseEntity<>(newGastroEsophagealReflux, HttpStatus.CREATED);
     }
@@ -75,26 +75,26 @@ public class GastroEsophagealRefluxController {
         return new ResponseEntity<>(gastroEsophagealRefluxes, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> findAllForUser(@PathVariable final String username) {
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final List<GastroEsophagealReflux> gastroEsophagealRefluxes = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all GastroEsophagealReflux for Patient with username: ´{}´.", username);
+        final List<GastroEsophagealReflux> gastroEsophagealRefluxes = illnessTypeService.findAllForUser(user);
+        LOGGER.info("Successfully founded all GastroEsophagealReflux for User with username: ´{}´.", username);
         return new ResponseEntity<>(gastroEsophagealRefluxes, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}/download/report")
+    @GetMapping("/user/{username}/download/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final String pdfReportName = pdfNamingService.generate(patient, GER);
+        final String pdfReportName = pdfNamingService.generate(user, GER);
         LOGGER.info("Successfully generated GastroEsophagealReflux pdf name: ´{}´.", pdfReportName);
 
-        final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX);
-        LOGGER.info("Successfully generated GastroEsophagealReflux pdf file for Patient with username: ´{}´.", username);
+        final ByteArrayInputStream bis = pdfFactoryService.generate(user, IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX);
+        LOGGER.info("Successfully generated GastroEsophagealReflux pdf file for User with username: ´{}´.", username);
 
         // TODO: Refactor - folder on phone
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");

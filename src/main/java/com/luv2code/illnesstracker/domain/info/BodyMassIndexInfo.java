@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "BODY_MASS_INDEX_INFO")
-public class BodyMassIndexInfo extends BaseEntity {
+public class BodyMassIndexInfo extends BaseEntity implements Serializable {
 
     @Column(name = "value")
     private String value;

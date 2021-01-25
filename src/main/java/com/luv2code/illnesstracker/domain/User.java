@@ -15,6 +15,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,55 +27,55 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "PATIENT")
+@Table(name = "USER")
 @EqualsAndHashCode(callSuper = true)
-public class Patient extends BaseEntity {
+public class User extends BaseEntity implements Serializable {
 
     @Column(name = "first_name")
-    @NotBlank(message = "{validation.patient.firstname.not_blank}")
-    @Size(min = 2, message = "{validation.patient.firstname.size}")
+    @NotBlank(message = "{validation.user.firstname.not_blank}")
+    @Size(min = 2, message = "{validation.user.firstname.size}")
     private String firstName;
 
     @Column(name = "last_name")
-    @NotBlank(message = "{validation.patient.lastname.not_blank}")
-    @Size(min = 2, message = "{validation.patient.lastname.size}")
+    @NotBlank(message = "{validation.user.lastname.not_blank}")
+    @Size(min = 2, message = "{validation.user.lastname.size}")
     private String lastName;
 
     @Column(name = "email")
-    @NotBlank(message = "{validation.patient.email.not_blank}")
-    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "{validation.patient.email.pattern}")
+    @NotBlank(message = "{validation.user.email.not_blank}")
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "{validation.user.email.pattern}")
     private String email;
 
     @Column(name = "username")
-    @NotBlank(message = "{validation.patient.username.not_blank}")
-    @Size(min = 5, message = "{validation.patient.username.size}")
+    @NotBlank(message = "{validation.user.username.not_blank}")
+    @Size(min = 5, message = "{validation.user.username.size}")
     private String username;
 
     @Column(name = "password")
-    @NotBlank(message = "{validation.patient.password.not_blank}")
-    @Size(min = 8, message = "{validation.patient.password.size}")
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "{validation.patient.password.pattern}")
+    @NotBlank(message = "{validation.user.password.not_blank}")
+    @Size(min = 8, message = "{validation.user.password.size}")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "{validation.user.password.pattern}")
     private String password;
 
     @Column(name = "date_of_birth")
     @JsonFormat(pattern="yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "{validation.patient.date_of_birth.not_null}")
+    @NotNull(message = "{validation.user.date_of_birth.not_null}")
     private LocalDate dateOfBirth;
 
     @Column(name = "phone_number")
-    @NotBlank(message = "{validation.patient.phone_number.not_blank}")
-    @Size(min = 13, max = 14, message = "{validation.patient.phone_number.size}")
-    @Pattern(regexp = "^\\+3859?[1,2,5,7,8,9]{1}?[0-9]{7}$", message = "{validation.patient.phone_number.pattern}")
+    @NotBlank(message = "{validation.user.phone_number.not_blank}")
+    @Size(min = 13, max = 14, message = "{validation.user.phone_number.size}")
+    @Pattern(regexp = "^\\+3859?[1,2,5,7,8,9]{1}?[0-9]{7}$", message = "{validation.user.phone_number.pattern}")
     private String phoneNumber;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{validation.patient.gender.not_null}")
+    @NotNull(message = "{validation.user.gender.not_null}")
     private GenderType gender;
 
-    @Column(name = "date_of_registration")
+    @Column(name = "registration_date")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime dateOfRegistration;
@@ -104,33 +105,33 @@ public class Patient extends BaseEntity {
     @ManyToMany
     @ToString.Exclude
     @JoinTable(
-            name = "PATIENT_ROLE",
-            joinColumns = @JoinColumn(name = "patient_id"),
+            name = "USER_ROLE",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "users")
     private List<BodyMassIndex> bodyMassIndexes;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "users")
     private List<Hypertension> hypertension;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "users")
     private List<Hyperthyroidism> hyperthyroid;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "users")
     private List<DiabetesMellitusTypeII> diabetesMellitusTypesII;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "users")
     private List<PainfulSyndrome> painfulSyndromes;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "users")
     private List<GastroEsophagealReflux> gastroEsophagealRefluxes;
 
 }

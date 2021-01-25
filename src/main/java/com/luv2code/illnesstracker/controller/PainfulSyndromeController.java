@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.PainfulSyndrome;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.PdfNamingService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
@@ -34,7 +34,7 @@ public class PainfulSyndromeController {
 
     private final IllnessTypeService<PainfulSyndrome> illnessTypeService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     private final PdfNamingService pdfNamingService;
 
@@ -42,21 +42,21 @@ public class PainfulSyndromeController {
 
     @Autowired
     public PainfulSyndromeController(@Qualifier("painfulSyndromeServiceImpl") final IllnessTypeService<PainfulSyndrome> illnessTypeService,
-                                   final PatientService patientService,
+                                   final UserService userService,
                                    final PdfNamingService pdfNamingService,
                                    final PdfFactoryService pdfFactoryService) {
         this.illnessTypeService = illnessTypeService;
-        this.patientService = patientService;
+        this.userService = userService;
         this.pdfNamingService = pdfNamingService;
         this.pdfFactoryService = pdfFactoryService;
     }
 
     @PostMapping("/patient/{username}")
     public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final PainfulSyndrome painfulSyndrome) {
-        final Patient patient = patientService.findByUsername(username);
+        final User user = userService.findByUsername(username);
         LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
-        final PainfulSyndrome newPainfulSyndrome = illnessTypeService.save(patient, painfulSyndrome);
+        final PainfulSyndrome newPainfulSyndrome = illnessTypeService.save(user, painfulSyndrome);
         LOGGER.info("Successfully save new PainfulSyndrome with id: ´{}´.", painfulSyndrome.getId());
         return new ResponseEntity<>(newPainfulSyndrome, HttpStatus.CREATED);
     }
@@ -77,23 +77,23 @@ public class PainfulSyndromeController {
 
     @GetMapping("/patient/{username}")
     public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
-        final Patient patient = patientService.findByUsername(username);
+        final User user = userService.findByUsername(username);
         LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
-        final List<PainfulSyndrome> painfulSyndromes = illnessTypeService.findAllForPatient(patient);
+        final List<PainfulSyndrome> painfulSyndromes = illnessTypeService.findAllForUser(user);
         LOGGER.info("Successfully founded all PainfulSyndrome for Patient with username: ´{}´.", username);
         return new ResponseEntity<>(painfulSyndromes, HttpStatus.OK);
     }
 
     @GetMapping("/patient/{username}/download/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
-        final Patient patient = patientService.findByUsername(username);
+        final User user = userService.findByUsername(username);
         LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
 
-        final String pdfReportName = pdfNamingService.generate(patient, PS);
+        final String pdfReportName = pdfNamingService.generate(user, PS);
         LOGGER.info("Successfully generated PainfulSyndrome pdf name: ´{}´.", pdfReportName);
 
-        final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.PAINFUL_SYNDROMES);
+        final ByteArrayInputStream bis = pdfFactoryService.generate(user, IllnessTypeUtil.PAINFUL_SYNDROMES);
         LOGGER.info("Successfully generated PainfulSyndrome pdf file for Patient with username: ´{}´.", username);
 
         // TODO: Refactor - folder on phone

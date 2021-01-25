@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.DiabetesMellitusTypeII;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.PdfNamingService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
@@ -34,7 +34,7 @@ public class DiabetesMellitusTypeIIController {
 
     private final IllnessTypeService<DiabetesMellitusTypeII> illnessTypeService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     private final PdfNamingService pdfNamingService;
 
@@ -42,21 +42,21 @@ public class DiabetesMellitusTypeIIController {
 
     @Autowired
     public DiabetesMellitusTypeIIController(@Qualifier("diabetesMellitusTypeIIServiceImpl") final IllnessTypeService<DiabetesMellitusTypeII> illnessTypeService,
-                                     final PatientService patientService,
+                                     final UserService userService,
                                      final PdfNamingService pdfNamingService,
                                      final PdfFactoryService pdfFactoryService) {
         this.illnessTypeService = illnessTypeService;
-        this.patientService = patientService;
+        this.userService = userService;
         this.pdfNamingService = pdfNamingService;
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{username}")
+    @PostMapping("/user/{username}")
     public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final DiabetesMellitusTypeII diabetesMellitusTypeII) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final DiabetesMellitusTypeII newDiabetesMellitusTypeII = illnessTypeService.save(patient, diabetesMellitusTypeII);
+        final DiabetesMellitusTypeII newDiabetesMellitusTypeII = illnessTypeService.save(user, diabetesMellitusTypeII);
         LOGGER.info("Successfully save new DiabetesMellitusTypeII with id: ´{}´.", diabetesMellitusTypeII.getId());
         return new ResponseEntity<>(newDiabetesMellitusTypeII, HttpStatus.CREATED);
     }
@@ -75,26 +75,26 @@ public class DiabetesMellitusTypeIIController {
         return new ResponseEntity<>(diabetesMellitusTypesII, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with id: ´{}´.", username);
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> findAllForUser(@PathVariable final String username) {
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with id: ´{}´.", username);
 
-        final List<DiabetesMellitusTypeII> diabetesMellitusTypesII = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all DiabetesMellitusTypeII for Patient with id: ´{}´.", username);
+        final List<DiabetesMellitusTypeII> diabetesMellitusTypesII = illnessTypeService.findAllForUser(user);
+        LOGGER.info("Successfully founded all DiabetesMellitusTypeII for User with id: ´{}´.", username);
         return new ResponseEntity<>(diabetesMellitusTypesII, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}/download/report")
+    @GetMapping("/user/{username}/download/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with id: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with id: ´{}´.", username);
 
-        final String pdfReportName = pdfNamingService.generate(patient, DIABETES_MELLITUS_TYPE_II);
+        final String pdfReportName = pdfNamingService.generate(user, DIABETES_MELLITUS_TYPE_II);
         LOGGER.info("Successfully generated DiabetesMellitusTypeII pdf name: ´{}´.", pdfReportName);
 
-        final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II);
-        LOGGER.info("Successfully generated DiabetesMellitusTypeII pdf file for Patient with username: ´{}´.", username);
+        final ByteArrayInputStream bis = pdfFactoryService.generate(user, IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II);
+        LOGGER.info("Successfully generated DiabetesMellitusTypeII pdf file for User with username: ´{}´.", username);
 
         // TODO: Refactor
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");

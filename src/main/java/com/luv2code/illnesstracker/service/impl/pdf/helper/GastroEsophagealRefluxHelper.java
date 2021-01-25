@@ -2,14 +2,12 @@ package com.luv2code.illnesstracker.service.impl.pdf.helper;
 
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.GastroEsophagealReflux;
 import com.luv2code.illnesstracker.service.FormatterService;
 import com.luv2code.illnesstracker.service.PdfCellBuilderService;
 import com.luv2code.illnesstracker.service.impl.formatter.FormatterServiceImpl;
 import com.luv2code.illnesstracker.service.impl.pdf.PdfCellBuilderServiceImpl;
-import com.luv2code.illnesstracker.util.PdfReportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +17,9 @@ public class GastroEsophagealRefluxHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GastroEsophagealRefluxHelper.class);
 
-    public static void populate(final PdfPTable table, final Patient patient) {
+    public static void populate(final PdfPTable table, final User user) {
         Integer counter = 1;
-        for (GastroEsophagealReflux gastroEsophagealReflux : patient.getGastroEsophagealRefluxes()) {
+        for (GastroEsophagealReflux gastroEsophagealReflux : user.getGastroEsophagealRefluxes()) {
             final PdfCellBuilderService cellBuilderService = new PdfCellBuilderServiceImpl();
 
             PdfPCell gerCell = cellBuilderService.add(String.valueOf(counter));

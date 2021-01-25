@@ -2,7 +2,7 @@ package com.luv2code.illnesstracker.service.impl.pdf.helper;
 
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
 import com.luv2code.illnesstracker.service.FormatterService;
 import com.luv2code.illnesstracker.service.PdfCellBuilderService;
@@ -18,9 +18,9 @@ public class BodyMassIndexHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BodyMassIndexHelper.class);
 
-    public static void populate(final PdfPTable table, final Patient patient) {
+    public static void populate(final PdfPTable table, final User user) {
         Integer counter = 1;
-        for (BodyMassIndex bodyMassIndex : patient.getBodyMassIndexes()) {
+        for (BodyMassIndex bodyMassIndex : user.getBodyMassIndexes()) {
             final PdfCellBuilderService cellBuilderService = new PdfCellBuilderServiceImpl();
 
             PdfPCell bmiCell = cellBuilderService.add(String.valueOf(counter));

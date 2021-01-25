@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
-import com.luv2code.illnesstracker.dto.PatientDto;
-import com.luv2code.illnesstracker.dto.mapper.PatientMapper;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.domain.User;
+import com.luv2code.illnesstracker.dto.UserDto;
+import com.luv2code.illnesstracker.dto.mapper.UserMapper;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +23,23 @@ RegistrationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
-    private final PatientService patientService;
+    private final UserService userService;
 
-    private final PatientMapper patientMapper;
+    private final UserMapper userMapper;
 
     @Autowired
-    public RegistrationController(final PatientService patientService,
-                                  final PatientMapper patientMapper) {
-        this.patientService = patientService;
-        this.patientMapper = patientMapper;
+    public RegistrationController(final UserService userService,
+                                  final UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody final Patient patient) {
-        final Patient newPatient = patientService.save(patient);
-        LOGGER.info("Successfully created new ´Patient´ with id: ´{}´.", newPatient.getId());
+    public ResponseEntity<?> save(@Valid @RequestBody final User user) {
+        final User newUser = userService.save(user);
+        LOGGER.info("Successfully created new ´Patient´ with id: ´{}´.", newUser.getId());
 
-        final PatientDto dto = patientMapper.toPatientDto(newPatient);
+        final UserDto dto = userMapper.toUserDto(newUser);
         LOGGER.info("Successfully mapped ´Patient´ to DTO.");
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }

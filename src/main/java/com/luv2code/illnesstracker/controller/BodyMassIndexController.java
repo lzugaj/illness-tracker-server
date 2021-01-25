@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.PdfNamingService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
@@ -34,7 +34,7 @@ public class BodyMassIndexController {
 
     private final IllnessTypeService<BodyMassIndex> illnessTypeService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     private final PdfNamingService pdfNamingService;
 
@@ -42,21 +42,21 @@ public class BodyMassIndexController {
 
     @Autowired
     public BodyMassIndexController(@Qualifier("bodyMassIndexServiceImpl") final IllnessTypeService<BodyMassIndex> illnessTypeService,
-                                   final PatientService patientService,
+                                   final UserService userService,
                                    final PdfNamingService pdfNamingService,
                                    final PdfFactoryService pdfFactoryService) {
         this.illnessTypeService = illnessTypeService;
-        this.patientService = patientService;
+        this.userService = userService;
         this.pdfNamingService = pdfNamingService;
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{username}")
+    @PostMapping("/user/{username}")
     public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final BodyMassIndex bodyMassIndex) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final BodyMassIndex newBodyMassIndex = illnessTypeService.save(patient, bodyMassIndex);
+        final BodyMassIndex newBodyMassIndex = illnessTypeService.save(user, bodyMassIndex);
         LOGGER.info("Successfully save new BodyMassIndex with id: ´{}´.", bodyMassIndex.getId());
         return new ResponseEntity<>(newBodyMassIndex, HttpStatus.CREATED);
     }
@@ -75,26 +75,26 @@ public class BodyMassIndexController {
         return new ResponseEntity<>(bodyMassIndexes, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> findAllForUser(@PathVariable final String username) {
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final List<BodyMassIndex> bodyMassIndexes = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all BodyMassIndex for Patient with username: ´{}´.", username);
+        final List<BodyMassIndex> bodyMassIndexes = illnessTypeService.findAllForUser(user);
+        LOGGER.info("Successfully founded all BodyMassIndex for User with username: ´{}´.", username);
         return new ResponseEntity<>(bodyMassIndexes, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}/download/report")
+    @GetMapping("/user/{username}/download/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final String pdfReportName = pdfNamingService.generate(patient, BMI);
+        final String pdfReportName = pdfNamingService.generate(user, BMI);
         LOGGER.info("Successfully generated BodyMassIndex pdf name: ´{}´.", pdfReportName);
 
-        final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.BODY_MASS_INDEX);
-        LOGGER.info("Successfully generated BodyMassIndex pdf file for Patient with username: ´{}´.", username);
+        final ByteArrayInputStream bis = pdfFactoryService.generate(user, IllnessTypeUtil.BODY_MASS_INDEX);
+        LOGGER.info("Successfully generated BodyMassIndex pdf file for User with username: ´{}´.", username);
 
         // TODO: Refactor - folder on phone
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");

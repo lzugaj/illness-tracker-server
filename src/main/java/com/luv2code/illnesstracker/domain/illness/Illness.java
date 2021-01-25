@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Table(name = "ILLNESS")
 @EqualsAndHashCode(callSuper = true)
-public class Illness extends BaseEntity {
+public class Illness extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;

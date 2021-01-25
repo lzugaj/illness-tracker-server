@@ -1,13 +1,14 @@
 package com.luv2code.illnesstracker.domain.illness.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "BODY_MASS_INDEX")
 @EqualsAndHashCode(callSuper = true)
-public class BodyMassIndex extends BaseIllness {
+public class BodyMassIndex extends BaseIllness implements Serializable {
 
     @Column(name = "height")
     @NotNull(message = "{validation.bmi.height.not_null}")
@@ -41,9 +42,9 @@ public class BodyMassIndex extends BaseIllness {
     @JsonIgnore
     @ToString.Exclude
     @JoinTable(
-            name = "PATIENT_BODY_MASS_INDEX",
+            name = "USER_BODY_MASS_INDEX",
             joinColumns = @JoinColumn(name = "bmi_id"),
-            inverseJoinColumns = @JoinColumn(name = "patient_id"))
-    private List<Patient> patients;
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 
 }

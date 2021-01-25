@@ -1,10 +1,10 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.Illness;
 import com.luv2code.illnesstracker.repository.illness.IllnessRepository;
 import com.luv2code.illnesstracker.service.IllnessService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,37 +20,37 @@ public class IllnessServiceImpl implements IllnessService {
 
     private final IllnessRepository illnessRepository;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     @Autowired
     public IllnessServiceImpl(final IllnessRepository illnessRepository,
-                              final PatientService patientService) {
+                              final UserService userService) {
         this.illnessRepository = illnessRepository;
-        this.patientService = patientService;
+        this.userService = userService;
     }
 
     @Override
-    public List<Illness> select(final Patient patient, final List<Illness> illnesses) {
-        LOGGER.info("Setting visible illness for Patient with id: ´{}´.", patient.getId());
+    public List<Illness> select(final User user, final List<Illness> illnesses) {
+        LOGGER.info("Setting visible illness for User with id: ´{}´.", user.getId());
         for (Illness illness : illnesses) {
             switch (illness.getName()) {
                 case IllnessTypeUtil.BODY_MASS_INDEX:
-                    patient.setIsBodyMassIndexActive(getIllnessSelectedValue(illness));
+                    user.setIsBodyMassIndexActive(getIllnessSelectedValue(illness));
                     break;
                 case IllnessTypeUtil.HYPERTENSION:
-                    patient.setIsHypertensionActive(getIllnessSelectedValue(illness));
+                    user.setIsHypertensionActive(getIllnessSelectedValue(illness));
                     break;
                 case IllnessTypeUtil.HYPERTHYROIDISM:
-                    patient.setIsHyperthyroidismActive(getIllnessSelectedValue(illness));
+                    user.setIsHyperthyroidismActive(getIllnessSelectedValue(illness));
                     break;
                 case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
-                    patient.setIsDiabetesMellitusTypeIIActive(getIllnessSelectedValue(illness));
+                    user.setIsDiabetesMellitusTypeIIActive(getIllnessSelectedValue(illness));
                     break;
                 case IllnessTypeUtil.PAINFUL_SYNDROMES:
-                    patient.setIsPainfulSyndromesActive(getIllnessSelectedValue(illness));
+                    user.setIsPainfulSyndromesActive(getIllnessSelectedValue(illness));
                     break;
                 case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
-                    patient.setIsGastroEsophagealRefluxActive(getIllnessSelectedValue(illness));
+                    user.setIsGastroEsophagealRefluxActive(getIllnessSelectedValue(illness));
                     break;
                 default:
                     break;
@@ -58,7 +58,7 @@ public class IllnessServiceImpl implements IllnessService {
         }
 
         // TODO: @lzugaj => Refactor
-        patientService.update(patient, patient);
+        userService.update(user, user);
         return illnesses;
     }
 

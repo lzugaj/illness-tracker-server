@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.PainfulSyndrome;
 import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ public class PainfulSyndromeServiceImpl extends AbstractIllnessTypeService<Painf
 
     @Autowired
     public PainfulSyndromeServiceImpl(final IllnessTypeRepository<PainfulSyndrome> illnessTypeRepository,
-                                      final PatientService patientService) {
-        super(illnessTypeRepository, patientService, PainfulSyndrome.class);
+                                      final UserService userService) {
+        super(illnessTypeRepository, userService, PainfulSyndrome.class);
     }
 
     @Override
-    public PainfulSyndrome save(final Patient patient, final PainfulSyndrome painfulSyndrome) {
-        setupVariablesCreate(patient, painfulSyndrome);
-        return super.save(patient, painfulSyndrome);
+    public PainfulSyndrome save(final User user, final PainfulSyndrome painfulSyndrome) {
+        setupVariablesCreate(user, painfulSyndrome);
+        return super.save(user, painfulSyndrome);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class PainfulSyndromeServiceImpl extends AbstractIllnessTypeService<Painf
     }
 
     @Override
-    public List<PainfulSyndrome> findAllForPatient(final Patient patient) {
-        return super.findAllForPatient(patient);
+    public List<PainfulSyndrome> findAllForUser(final User user) {
+        return super.findAllForUser(user);
     }
 
     @Override
@@ -56,18 +56,18 @@ public class PainfulSyndromeServiceImpl extends AbstractIllnessTypeService<Painf
         super.delete(painfulSyndrome);
     }
 
-    private void setupVariablesCreate(final Patient patient, final PainfulSyndrome painfulSyndrome) {
+    private void setupVariablesCreate(final User user, final PainfulSyndrome painfulSyndrome) {
         LOGGER.info("Setting up new PainfulSyndrome variables.");
         painfulSyndrome.setDateOfPerformedMeasurement(LocalDateTime.now());
 
-        final List<PainfulSyndrome> painfulSyndromes = findAllForPatient(patient);
-        LOGGER.info("Successfully founded ´{}´ PainfulSyndrome record for Patient with id: ´{}´.", painfulSyndromes.size(), patient.getId());
+        final List<PainfulSyndrome> painfulSyndromes = findAllForUser(user);
+        LOGGER.info("Successfully founded ´{}´ PainfulSyndrome record for User with id: ´{}´.", painfulSyndromes.size(), user.getId());
 
         painfulSyndromes.add(painfulSyndrome);
-        painfulSyndrome.setPatients(Collections.singletonList(patient));
+        painfulSyndrome.setUsers(Collections.singletonList(user));
 
-        LOGGER.info("Setting up Patient variables.");
-        patient.setPainfulSyndromes(painfulSyndromes);
+        LOGGER.info("Setting up User variables.");
+        user.setPainfulSyndromes(painfulSyndromes);
     }
 
     private void setupVariablesUpdate(final PainfulSyndrome oldPainfulSyndrome, final PainfulSyndrome newPainfulSyndrome) {

@@ -1,11 +1,11 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.BodyMassIndex;
 import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
 import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +27,16 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
 
     @Autowired
     public BodyMassIndexServiceImpl(final IllnessTypeRepository<BodyMassIndex> illnessTypeRepository,
-                                    final PatientService patientService,
+                                    final UserService userService,
                                     @Qualifier("bodyMassIndexInfoServiceImpl") final IllnessTypeInfoService<BodyMassIndexInfo> illnessTypeInfoService) {
-        super(illnessTypeRepository, patientService, BodyMassIndex.class);
+        super(illnessTypeRepository, userService, BodyMassIndex.class);
         this.illnessTypeInfoService = illnessTypeInfoService;
     }
 
     @Override
-    public BodyMassIndex save(final Patient patient, final BodyMassIndex bodyMassIndex) {
-        setupVariablesCreate(patient, bodyMassIndex);
-        return super.save(patient, bodyMassIndex);
+    public BodyMassIndex save(final User user, final BodyMassIndex bodyMassIndex) {
+        setupVariablesCreate(user, bodyMassIndex);
+        return super.save(user, bodyMassIndex);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
     }
 
     @Override
-    public List<BodyMassIndex> findAllForPatient(final Patient patient) {
-        return super.findAllForPatient(patient);
+    public List<BodyMassIndex> findAllForUser(final User user) {
+        return super.findAllForUser(user);
     }
 
     @Override
@@ -65,15 +65,15 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
         super.delete(illness);
     }
 
-    private void setupVariablesCreate(final Patient patient, final BodyMassIndex bodyMassIndex) {
-        LOGGER.info("Setting up BodyMassIndex variables for Patient with id: ´{}´.", patient.getId());
+    private void setupVariablesCreate(final User user, final BodyMassIndex bodyMassIndex) {
+        LOGGER.info("Setting up BodyMassIndex variables for User with id: ´{}´.", user.getId());
         bodyMassIndex.setDateOfPerformedMeasurement(LocalDateTime.now());
 
-        final List<BodyMassIndex> bodyMassIndexes = findAllForPatient(patient);
-        LOGGER.info("Successfully founded ´{}´ BodyMassIndex record for Patient with id: ´{}´.", bodyMassIndexes.size(), patient.getId());
+        final List<BodyMassIndex> bodyMassIndexes = findAllForUser(user);
+        LOGGER.info("Successfully founded ´{}´ BodyMassIndex record for User with id: ´{}´.", bodyMassIndexes.size(), user.getId());
 
         bodyMassIndexes.add(bodyMassIndex);
-        bodyMassIndex.setPatients(Collections.singletonList(patient));
+        bodyMassIndex.setUsers(Collections.singletonList(user));
 
         final Double bmiIndexValue = calculateBMIIndexValue(bodyMassIndex);
         bodyMassIndex.setIndexValue(bmiIndexValue);
@@ -83,7 +83,7 @@ public class BodyMassIndexServiceImpl extends AbstractIllnessTypeService<BodyMas
 
         bodyMassIndex.setBodyMassIndexInfo(bodyMassIndexInfo);
         bodyMassIndexInfo.setBodyMassIndexes(Collections.singletonList(bodyMassIndex));
-        patient.setBodyMassIndexes(bodyMassIndexes);
+        user.setBodyMassIndexes(bodyMassIndexes);
     }
 
     private void setupVariablesUpdate(final BodyMassIndex oldBodyMassIndex, final BodyMassIndex newBodyMassIndex) {

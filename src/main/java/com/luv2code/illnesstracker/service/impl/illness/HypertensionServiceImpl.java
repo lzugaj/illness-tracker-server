@@ -1,11 +1,11 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.Hypertension;
 import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
 import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +25,16 @@ public class HypertensionServiceImpl extends AbstractIllnessTypeService<Hyperten
 
     @Autowired
     public HypertensionServiceImpl(final IllnessTypeRepository<Hypertension> illnessTypeRepository,
-                                   final PatientService patientService,
+                                   final UserService userService,
                                    @Qualifier("hypertensionInfoServiceImpl") final IllnessTypeInfoService<HypertensionInfo> illnessTypeInfoService) {
-        super(illnessTypeRepository, patientService, Hypertension.class);
+        super(illnessTypeRepository, userService, Hypertension.class);
         this.illnessTypeInfoService = illnessTypeInfoService;
     }
 
     @Override
-    public Hypertension save(final Patient patient, final Hypertension hypertension) {
-        setupVariablesCreate(patient, hypertension);
-        return super.save(patient, hypertension);
+    public Hypertension save(final User user, final Hypertension hypertension) {
+        setupVariablesCreate(user, hypertension);
+        return super.save(user, hypertension);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class HypertensionServiceImpl extends AbstractIllnessTypeService<Hyperten
     }
 
     @Override
-    public List<Hypertension> findAllForPatient(Patient patient) {
-        return super.findAllForPatient(patient);
+    public List<Hypertension> findAllForUser(User user) {
+        return super.findAllForUser(user);
     }
 
     @Override
@@ -63,15 +63,15 @@ public class HypertensionServiceImpl extends AbstractIllnessTypeService<Hyperten
         super.delete(hypertension);
     }
 
-    private void setupVariablesCreate(final Patient patient, final Hypertension hypertension) {
+    private void setupVariablesCreate(final User user, final Hypertension hypertension) {
         LOGGER.info("Setting up new Hypertension variables.");
         hypertension.setDateOfPerformedMeasurement(LocalDateTime.now());
 
-        final List<Hypertension> hypertensives = findAllForPatient(patient);
-        LOGGER.info("Successfully founded ´{}´ Hypertension record for Patient with id: ´{}´.", hypertensives.size(), patient.getId());
+        final List<Hypertension> hypertensives = findAllForUser(user);
+        LOGGER.info("Successfully founded ´{}´ Hypertension record for User with id: ´{}´.", hypertensives.size(), user.getId());
 
         hypertensives.add(hypertension);
-        hypertension.setPatients(Collections.singletonList(patient));
+        hypertension.setUsers(Collections.singletonList(user));
 
         final HypertensionInfo hypertensionInfo = illnessTypeInfoService.findByIndexValue(Double.valueOf(hypertension.getSystolic()), Double.valueOf(hypertension.getDiastolic()));
         LOGGER.info("Successfully founded HypertensionInfo with id: ´{}´.", hypertensionInfo.getId());
@@ -79,8 +79,8 @@ public class HypertensionServiceImpl extends AbstractIllnessTypeService<Hyperten
         hypertension.setHypertensionInfo(hypertensionInfo);
         hypertensionInfo.setHypertension(Collections.singletonList(hypertension));
 
-        LOGGER.info("Setting up Patient variables.");
-        patient.setHypertension(hypertensives);
+        LOGGER.info("Setting up User variables.");
+        user.setHypertension(hypertensives);
     }
 
     private void setupVariablesUpdate(final Hypertension oldHypertension, final Hypertension newHypertension) {

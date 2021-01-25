@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.Hyperthyroidism;
 import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ public class HyperthyroidismServiceImpl extends AbstractIllnessTypeService<Hyper
 
     @Autowired
     public HyperthyroidismServiceImpl(final IllnessTypeRepository<Hyperthyroidism> illnessTypeRepository,
-                                      final PatientService patientService) {
-        super(illnessTypeRepository, patientService, Hyperthyroidism.class);
+                                      final UserService userService) {
+        super(illnessTypeRepository, userService, Hyperthyroidism.class);
     }
 
     @Override
-    public Hyperthyroidism save(final Patient patient, final Hyperthyroidism hyperthyroidism) {
-        setupVariablesCreate(patient, hyperthyroidism);
-        return super.save(patient, hyperthyroidism);
+    public Hyperthyroidism save(final User user, final Hyperthyroidism hyperthyroidism) {
+        setupVariablesCreate(user, hyperthyroidism);
+        return super.save(user, hyperthyroidism);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class HyperthyroidismServiceImpl extends AbstractIllnessTypeService<Hyper
     }
 
     @Override
-    public List<Hyperthyroidism> findAllForPatient(final Patient patient) {
-        return super.findAllForPatient(patient);
+    public List<Hyperthyroidism> findAllForUser(final User user) {
+        return super.findAllForUser(user);
     }
 
     @Override
@@ -56,18 +56,18 @@ public class HyperthyroidismServiceImpl extends AbstractIllnessTypeService<Hyper
         super.delete(illness);
     }
 
-    private void setupVariablesCreate(final Patient patient, final Hyperthyroidism hyperthyroidism) {
+    private void setupVariablesCreate(final User user, final Hyperthyroidism hyperthyroidism) {
         LOGGER.info("Setting up new Hyperthyroidism variables.");
         hyperthyroidism.setDateOfPerformedMeasurement(LocalDateTime.now());
 
-        final List<Hyperthyroidism> hyperthyroid = findAllForPatient(patient);
-        LOGGER.info("Successfully founded ´{}´ Hyperthyroidism record for Patient with id: ´{}´.", hyperthyroid.size(), patient.getId());
+        final List<Hyperthyroidism> hyperthyroid = findAllForUser(user);
+        LOGGER.info("Successfully founded ´{}´ Hyperthyroidism record for User with id: ´{}´.", hyperthyroid.size(), user.getId());
 
         hyperthyroid.add(hyperthyroidism);
-        hyperthyroidism.setPatients(Collections.singletonList(patient));
+        hyperthyroidism.setUsers(Collections.singletonList(user));
 
-        LOGGER.info("Setting up Patient variables.");
-        patient.setHyperthyroid(hyperthyroid);
+        LOGGER.info("Setting up User variables.");
+        user.setHyperthyroid(hyperthyroid);
     }
 
     private void setupVariablesUpdate(final Hyperthyroidism oldHyperthyroidism, final Hyperthyroidism newHyperthyroidism) {

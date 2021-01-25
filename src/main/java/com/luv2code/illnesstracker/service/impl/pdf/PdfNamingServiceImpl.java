@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.service.impl.pdf;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.repository.DummyRepository;
 import com.luv2code.illnesstracker.service.PdfNamingService;
 import org.slf4j.Logger;
@@ -24,41 +24,41 @@ public class PdfNamingServiceImpl implements PdfNamingService {
     }
 
     @Override
-    public String generate(final Patient patient, final String illnessType) {
-        final String patientFullName = getPatientFullName(patient);
+    public String generate(final User user, final String illnessType) {
+        final String userFullName = getUserFullName(user);
         final String currentDate = getCurrentDate();
         final Long id = dummyRepository.getNextSeriesId();
 
-        LOGGER.info("Generating pdf report for Patient with id: ´{}´.", patient.getId());
+        LOGGER.info("Generating pdf report for User with id: ´{}´.", user.getId());
         return String.format("%s%05d_%s%s",
-                currentDate, id, patientFullName, illnessType);
+                currentDate, id, userFullName, illnessType);
     }
 
-    private String getPatientFullName(final Patient patient) {
-        final String firstName = getPatientFirstName(patient);
-        final String lastName = getPatientLastName(patient);
+    private String getUserFullName(final User user) {
+        final String firstName = getUserFirstName(user);
+        final String lastName = getUserLastName(user);
         return String.format("%s%s", firstName, lastName);
     }
 
-    private String getPatientFirstName(final Patient patient) {
+    private String getUserFirstName(final User user) {
         StringBuilder firstNames = new StringBuilder();
-        final String[] names = patient.getFirstName().toLowerCase(Locale.ROOT).split(" ");
+        final String[] names = user.getFirstName().toLowerCase(Locale.ROOT).split(" ");
         for (String name : names) {
             firstNames.append(name).append("_");
         }
 
-        LOGGER.info("Patient first names are: ´{}´.", firstNames);
+        LOGGER.info("User first names are: ´{}´.", firstNames);
         return String.valueOf(firstNames);
     }
 
-    private String getPatientLastName(final Patient patient) {
+    private String getUserLastName(final User user) {
         StringBuilder lastNames = new StringBuilder();
-        final String[] surnames = patient.getLastName().toLowerCase(Locale.ROOT).split(" ");
+        final String[] surnames = user.getLastName().toLowerCase(Locale.ROOT).split(" ");
         for (String surname : surnames) {
             lastNames.append(surname).append("_");
         }
 
-        LOGGER.info("Patient last names are: ´{}´.", lastNames);
+        LOGGER.info("User last names are: ´{}´.", lastNames);
         return String.valueOf(lastNames);
     }
 

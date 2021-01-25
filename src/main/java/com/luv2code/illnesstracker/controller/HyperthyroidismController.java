@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.Hyperthyroidism;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.PdfNamingService;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
@@ -34,7 +34,7 @@ public class HyperthyroidismController {
 
     private final IllnessTypeService<Hyperthyroidism> illnessTypeService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     private final PdfNamingService pdfNamingService;
 
@@ -42,21 +42,21 @@ public class HyperthyroidismController {
 
     @Autowired
     public HyperthyroidismController(@Qualifier("hyperthyroidismServiceImpl") final IllnessTypeService<Hyperthyroidism> illnessTypeService,
-                                     final PatientService patientService,
+                                     final UserService userService,
                                      final PdfNamingService pdfNamingService,
                                      final PdfFactoryService pdfFactoryService) {
         this.illnessTypeService = illnessTypeService;
-        this.patientService = patientService;
+        this.userService = userService;
         this.pdfNamingService = pdfNamingService;
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{username}")
+    @PostMapping("/user/{username}")
     public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final Hyperthyroidism hyperthyroidism) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final Hyperthyroidism newHyperthyroidism = illnessTypeService.save(patient, hyperthyroidism);
+        final Hyperthyroidism newHyperthyroidism = illnessTypeService.save(user, hyperthyroidism);
         LOGGER.info("Successfully save new Hyperthyroidism with id: ´{}´.", hyperthyroidism.getId());
         return new ResponseEntity<>(newHyperthyroidism, HttpStatus.CREATED);
     }
@@ -75,26 +75,26 @@ public class HyperthyroidismController {
         return new ResponseEntity<>(hyperthyroid, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> findAllForUser(@PathVariable final String username) {
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final List<Hyperthyroidism> hyperthyroid = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all Hyperthyroidism for Patient with username: ´{}´.", username);
+        final List<Hyperthyroidism> hyperthyroid = illnessTypeService.findAllForUser(user);
+        LOGGER.info("Successfully founded all Hyperthyroidism for User with username: ´{}´.", username);
         return new ResponseEntity<>(hyperthyroid, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}/download/report")
+    @GetMapping("/user/{username}/download/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final String pdfReportName = pdfNamingService.generate(patient, HYPERTHYROIDISM);
+        final String pdfReportName = pdfNamingService.generate(user, HYPERTHYROIDISM);
         LOGGER.info("Successfully generated Hyperthyroidism pdf name: ´{}´.", pdfReportName);
 
-        final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.HYPERTHYROIDISM);
-        LOGGER.info("Successfully generated Hyperthyroidism pdf file for Patient with username: ´{}´.", username);
+        final ByteArrayInputStream bis = pdfFactoryService.generate(user, IllnessTypeUtil.HYPERTHYROIDISM);
+        LOGGER.info("Successfully generated Hyperthyroidism pdf file for User with username: ´{}´.", username);
 
         // TODO: Refactor
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");

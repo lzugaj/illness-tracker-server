@@ -1,10 +1,10 @@
-package com.luv2code.illnesstracker.service.formatter;
+package com.luv2code.illnesstracker.service.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.Role;
 import com.luv2code.illnesstracker.domain.illness.Illness;
 import com.luv2code.illnesstracker.repository.illness.IllnessRepository;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import com.luv2code.illnesstracker.service.impl.illness.IllnessServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.luv2code.illnesstracker.domain.enums.GenderType.MALE;
-import static com.luv2code.illnesstracker.domain.enums.RoleType.PATIENT;
+import static com.luv2code.illnesstracker.domain.enums.RoleType.USER;
 
 @SpringBootTest
 public class IllnessServiceImplTest {
@@ -31,42 +31,42 @@ public class IllnessServiceImplTest {
     private IllnessRepository illnessRepository;
 
     @Mock
-    private PatientService patientService;
+    private UserService userService;
 
     private Illness firstIllness;
     private Illness secondIllness;
     private Illness thirdIllness;
 
-    private Patient patient;
+    private User user;
 
     private List<Illness> illnesses;
 
     @BeforeEach
     public void setup() {
-        Role patientRole = new Role();
-        patientRole.setId(1L);
-        patientRole.setName(PATIENT);
-        patientRole.setDescription("The user role can perform CRUD operations over his/her profile and illnesses.");
+        Role userRole = new Role();
+        userRole.setId(1L);
+        userRole.setName(USER);
+        userRole.setDescription("The user role can perform CRUD operations over his/her profile and illnesses.");
 
-        patient = new Patient();
-        patient.setId(1L);
-        patient.setFirstName("Michael");
-        patient.setLastName("Jordan");
-        patient.setEmail("michael.jordan23@gmail.com");
-        patient.setUsername("michael");
-        patient.setPassword("TheGoat23");
-        patient.setDateOfBirth(LocalDate.of(1987, 4, 15));
-        patient.setPhoneNumber("+385912346789");
-        patient.setGender(MALE);
-        patient.setBodyMassIndexes(null);
-        patient.setHypertension(null);
-        patient.setHyperthyroid(null);
-        patient.setDiabetesMellitusTypesII(null);
-        patient.setPainfulSyndromes(null);
-        patient.setGastroEsophagealRefluxes(null);
-        patient.setIsBodyMassIndexActive(false);
-        patient.setIsHypertensionActive(false);
-        patient.setIsHyperthyroidismActive(false);
+        user = new User();
+        user.setId(1L);
+        user.setFirstName("Michael");
+        user.setLastName("Jordan");
+        user.setEmail("michael.jordan23@gmail.com");
+        user.setUsername("michael");
+        user.setPassword("TheGoat23");
+        user.setDateOfBirth(LocalDate.of(1987, 4, 15));
+        user.setPhoneNumber("+385912346789");
+        user.setGender(MALE);
+        user.setBodyMassIndexes(null);
+        user.setHypertension(null);
+        user.setHyperthyroid(null);
+        user.setDiabetesMellitusTypesII(null);
+        user.setPainfulSyndromes(null);
+        user.setGastroEsophagealRefluxes(null);
+        user.setIsBodyMassIndexActive(false);
+        user.setIsHypertensionActive(false);
+        user.setIsHyperthyroidismActive(false);
 
         firstIllness = new Illness();
         firstIllness.setId(1L);
@@ -89,12 +89,12 @@ public class IllnessServiceImplTest {
         illnesses.add(thirdIllness);
 
         Mockito.when(illnessRepository.findAll()).thenReturn(illnesses);
-        Mockito.doNothing().when(patientService.update(patient, patient));
+        Mockito.doNothing().when(userService.update(user, user));
     }
 
     @Test
     public void should_Select_Illnesses() {
-        final List<Illness> chosenIllnesses = illnessService.select(patient, illnesses);
+        final List<Illness> chosenIllnesses = illnessService.select(user, illnesses);
 
         Assertions.assertNotNull(chosenIllnesses);
         Assertions.assertEquals("3", String.valueOf(illnesses.size()));

@@ -1,12 +1,12 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.exception.IllnessOptionIsNotSelectedException;
 import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
 import com.luv2code.illnesstracker.service.IllnessTypeService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,26 +25,26 @@ public abstract class AbstractIllnessTypeService<T extends BaseIllness> implemen
 
     private final IllnessTypeRepository<T> illnessTypeRepository;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     @Autowired
     public AbstractIllnessTypeService(final IllnessTypeRepository<T> illnessTypeRepository,
-                                      final PatientService patientService,
+                                      final UserService userService,
                                       final Class<T> illnessClass) {
         this.illnessTypeRepository = illnessTypeRepository;
-        this.patientService = patientService;
+        this.userService = userService;
         this.illnessClass = illnessClass;
     }
 
     @Override
-    public T save(final Patient patient, final T illness) {
-        if (patient.getIsBodyMassIndexActive()) {
+    public T save(final User user, final T illness) {
+        if (user.getIsBodyMassIndexActive()) {
             final T newIllness = illnessTypeRepository.save(illness);
             LOGGER.info("Saving new ´{}´ with id: ´{}´.", getIllnessName(illnessClass), illness.getId());
             return newIllness;
         } else {
-            LOGGER.error("´{}´ is not active for Patient with id: ´{}´.", getIllnessName(illnessClass), patient.getId());
-            throw new IllnessOptionIsNotSelectedException("Patient", "isActive", String.valueOf(patient.getIsBodyMassIndexActive()));
+            LOGGER.error("´{}´ is not active for User with id: ´{}´.", getIllnessName(illnessClass), user.getId());
+            throw new IllnessOptionIsNotSelectedException("User", "isActive", String.valueOf(user.getIsBodyMassIndexActive()));
         }
     }
 
@@ -68,14 +68,14 @@ public abstract class AbstractIllnessTypeService<T extends BaseIllness> implemen
     }
 
     @Override
-    public List<T> findAllForPatient(final Patient patient) {
+    public List<T> findAllForUser(final User user) {
         final List<T> illnesses = findAll();
         final List<T> searchedIllnesses = new ArrayList<>();
-        LOGGER.info("Searching all ´{}´ for Patient with id: ´{}´.", getIllnessName(illnessClass), patient.getId());
+        LOGGER.info("Searching all ´{}´ for User with id: ´{}´.", getIllnessName(illnessClass), user.getId());
 
         for (T illness : illnesses) {
-            for (Patient searchedPatient : patientService.findAll()) {
-                if (patient.getEmail().equals(searchedPatient.getEmail())) {
+            for (User searchedUser : userService.findAll()) {
+                if (user.getEmail().equals(searchedUser.getEmail())) {
                     searchedIllnesses.add(illness);
                 }
             }

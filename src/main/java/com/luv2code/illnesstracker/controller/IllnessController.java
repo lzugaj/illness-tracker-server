@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.controller;
 
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.Illness;
-import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.service.IllnessService;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +21,21 @@ public class IllnessController {
 
     private final IllnessService illnessService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     @Autowired
     public IllnessController(final IllnessService illnessService,
-                             final PatientService patientService) {
+                             final UserService userService) {
         this.illnessService = illnessService;
-        this.patientService = patientService;
+        this.userService = userService;
     }
 
     @PostMapping("/patient/{username}")
     public ResponseEntity<?> select(@PathVariable final String username, @RequestBody final List<Illness> illnesses) {
-        final Patient searchedPatient = patientService.findByUsername(username);
+        final User searchedUser = userService.findByUsername(username);
         LOGGER.info("Successfully founded ´Patient´ with username: ´{}´.", username);
 
-        final List<Illness> searchedIllnesses = illnessService.select(searchedPatient, illnesses);
+        final List<Illness> searchedIllnesses = illnessService.select(searchedUser, illnesses);
         LOGGER.info("Successfully selected and set visible chosen Illness for Patient with username: ´{}´.", username);
         return new ResponseEntity<>(searchedIllnesses, HttpStatus.OK);
     }

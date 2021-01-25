@@ -1,6 +1,6 @@
 package com.luv2code.illnesstracker.controller;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.Hypertension;
 import com.luv2code.illnesstracker.service.*;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
@@ -31,7 +31,7 @@ public class HypertensionController {
 
     private final IllnessTypeService<Hypertension> illnessTypeService;
 
-    private final PatientService patientService;
+    private final UserService userService;
 
     private final PdfNamingService pdfNamingService;
 
@@ -39,21 +39,21 @@ public class HypertensionController {
 
     @Autowired
     public HypertensionController(@Qualifier("hypertensionServiceImpl") final IllnessTypeService<Hypertension> illnessTypeService,
-                                  final PatientService patientService,
+                                  final UserService userService,
                                   final PdfNamingService pdfNamingService,
                                   final PdfFactoryService pdfFactoryService) {
         this.illnessTypeService = illnessTypeService;
-        this.patientService = patientService;
+        this.userService = userService;
         this.pdfNamingService = pdfNamingService;
         this.pdfFactoryService = pdfFactoryService;
     }
 
-    @PostMapping("/patient/{username}")
+    @PostMapping("/user/{username}")
     public ResponseEntity<?> save(@PathVariable final String username, @Valid @RequestBody final Hypertension hypertension) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final Hypertension newHypertension = illnessTypeService.save(patient, hypertension);
+        final Hypertension newHypertension = illnessTypeService.save(user, hypertension);
         LOGGER.info("Successfully save new Hypertension with id: ´{}´.", hypertension.getId());
         return new ResponseEntity<>(newHypertension, HttpStatus.CREATED);
     }
@@ -72,26 +72,26 @@ public class HypertensionController {
         return new ResponseEntity<>(hypertensive, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}")
-    public ResponseEntity<?> findAllForPatient(@PathVariable final String username) {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> findAllForUser(@PathVariable final String username) {
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final List<Hypertension> hypertensive = illnessTypeService.findAllForPatient(patient);
-        LOGGER.info("Successfully founded all Hypertension for Patient with username: ´{}´.", username);
+        final List<Hypertension> hypertensive = illnessTypeService.findAllForUser(user);
+        LOGGER.info("Successfully founded all Hypertension for User with username: ´{}´.", username);
         return new ResponseEntity<>(hypertensive, HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{username}/download/report")
+    @GetMapping("/user/{username}/download/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
-        final Patient patient = patientService.findByUsername(username);
-        LOGGER.info("Successfully founded Patient with username: ´{}´.", username);
+        final User user = userService.findByUsername(username);
+        LOGGER.info("Successfully founded User with username: ´{}´.", username);
 
-        final String pdfReportName = pdfNamingService.generate(patient, HYPERTENSION);
+        final String pdfReportName = pdfNamingService.generate(user, HYPERTENSION);
         LOGGER.info("Successfully generated Hypertension pdf name: ´{}´.", pdfReportName);
 
-        final ByteArrayInputStream bis = pdfFactoryService.generate(patient, IllnessTypeUtil.HYPERTENSION);
-        LOGGER.info("Successfully generated Hypertension pdf file for Patient with username: ´{}´.", username);
+        final ByteArrayInputStream bis = pdfFactoryService.generate(user, IllnessTypeUtil.HYPERTENSION);
+        LOGGER.info("Successfully generated Hypertension pdf file for User with username: ´{}´.", username);
 
         // TODO: Refactor
         final File file = new File( PDF_RESOURCE_FOLDER_PATH + pdfReportName + ".pdf");

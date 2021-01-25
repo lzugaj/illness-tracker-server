@@ -2,7 +2,7 @@ package com.luv2code.illnesstracker.service.impl.pdf.helper;
 
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.PainfulSyndrome;
 import com.luv2code.illnesstracker.service.FormatterService;
 import com.luv2code.illnesstracker.service.PdfCellBuilderService;
@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
-public class PatientSyndromeHelper {
+public class UserSyndromeHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PatientSyndromeHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserSyndromeHelper.class);
 
-    public static void populate(final PdfPTable table, final Patient patient) {
+    public static void populate(final PdfPTable table, final User user) {
         Integer counter = 1;
-        for (PainfulSyndrome painfulSyndrome : patient.getPainfulSyndromes()) {
+        for (PainfulSyndrome painfulSyndrome : user.getPainfulSyndromes()) {
             final PdfCellBuilderService cellBuilderService = new PdfCellBuilderServiceImpl();
 
             PdfPCell psCell = cellBuilderService.add(String.valueOf(counter));

@@ -6,18 +6,18 @@ import java.util.List;
 public class PdfReportUtil {
 
     // Application name
-    public static final String SYSTEM_NAME = "PIMS - Patient illness monitoring system";
+    public static final String SYSTEM_NAME = "PIMS - User illness monitoring system";
 
     // Header and Footer
     public static final String CURRENT_DATE = "Date: ";
     public static final String CURRENT_PAGE = "Page ";
     public static final String RECTANGLE = "rectangle";
 
-    // Patient
-    public static final String PATIENT_FULL_NAME = "Full name: ";
-    public static final String PATIENT_EMAIL = "Email: ";
-    public static final String PATIENT_DATE_OF_BIRTH = "Date of birth: ";
-    public static final String PATIENT_PHONE_NUMBER = "Phone number: ";
+    // User
+    public static final String USER_FULL_NAME = "Full name: ";
+    public static final String USER_EMAIL = "Email: ";
+    public static final String USER_DATE_OF_BIRTH = "Date of birth: ";
+    public static final String USER_PHONE_NUMBER = "Phone number: ";
 
     // Body Mass Index
     public static final String BODY_MASS_INDEX_TITLE = "Body mass index measurement history";

@@ -1,11 +1,11 @@
 package com.luv2code.illnesstracker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.enums.GenderType;
-import com.luv2code.illnesstracker.dto.PatientDto;
-import com.luv2code.illnesstracker.dto.mapper.PatientMapper;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.dto.UserDto;
+import com.luv2code.illnesstracker.dto.mapper.UserMapper;
+import com.luv2code.illnesstracker.service.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,42 +27,42 @@ public class RegistrationControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PatientService patientService;
+    private UserService userService;
 
     @MockBean
-    private PatientMapper patientMapper;
+    private UserMapper userMapper;
 
     private ObjectMapper objectMapper;
 
-    private Patient patient;
+    private User user;
 
     @BeforeEach
     public void setup() {
         objectMapper = new ObjectMapper();
 
-        patient = new Patient();
-        patient.setId(1L);
-        patient.setFirstName("Michael");
-        patient.setLastName("Jordan");
-        patient.setEmail("michael.jordan23@gmail.com");
-        patient.setUsername("michael");
-        patient.setPassword("theGoat23");
-        patient.setDateOfBirth(LocalDate.parse("1996-09-12"));
-        patient.setPhoneNumber("+385987654321");
-        patient.setGender(GenderType.MALE);
+        user = new User();
+        user.setId(1L);
+        user.setFirstName("Michael");
+        user.setLastName("Jordan");
+        user.setEmail("michael.jordan23@gmail.com");
+        user.setUsername("michael");
+        user.setPassword("theGoat23");
+        user.setDateOfBirth(LocalDate.parse("1996-09-12"));
+        user.setPhoneNumber("+385987654321");
+        user.setGender(GenderType.MALE);
 
-        PatientDto patientDto = new PatientDto();
-        patientDto.setId(1L);
-        patientDto.setFirstName("Michael");
-        patientDto.setLastName("Jordan");
-        patientDto.setEmail("michael.jordan23@gmail.com");
-        patientDto.setUsername("michael");
-        patientDto.setDateOfBirth(LocalDate.parse("1996-09-12"));
-        patientDto.setPhoneNumber("+385987654321");
-        patientDto.setGender(GenderType.MALE);
+        UserDto userDto = new UserDto();
+        userDto.setId(1L);
+        userDto.setFirstName("Michael");
+        userDto.setLastName("Jordan");
+        userDto.setEmail("michael.jordan23@gmail.com");
+        userDto.setUsername("michael");
+        userDto.setDateOfBirth(LocalDate.parse("1996-09-12"));
+        userDto.setPhoneNumber("+385987654321");
+        userDto.setGender(GenderType.MALE);
 
-        BDDMockito.given(patientService.save(patient)).willReturn(patient);
-        BDDMockito.given(patientMapper.toPatientDto(patient)).willReturn(patientDto);
+        BDDMockito.given(userService.save(user)).willReturn(user);
+        BDDMockito.given(userMapper.toUserDto(user)).willReturn(userDto);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class RegistrationControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/registration")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(patient)))
+                        .content(objectMapper.writeValueAsString(user)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.equalTo(1)));
     }

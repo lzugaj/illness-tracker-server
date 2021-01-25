@@ -1,16 +1,16 @@
 -- drop tables
 drop table if exists "ROLE";
-drop table if exists "PATIENT";
-drop table if exists "PATIENT_ROLE";
+drop table if exists "USER";
+drop table if exists "USER_ROLE";
 drop table if exists "ILLNESS";
 drop table if exists "BODY_MASS_INDEX_INFO";
 drop table if exists "BODY_MASS_INDEX";
-drop table if exists "PATIENT_BODY_MASS_INDEX";
+drop table if exists "USER_BODY_MASS_INDEX";
 drop table if exists "HYPERTENSION_INFO";
 drop table if exists "HYPERTENSION";
-drop table if exists "PATIENT_HYPERTENSION";
+drop table if exists "USER_HYPERTENSION";
 drop table if exists "HYPERTHYROIDISM";
-drop table if exists "PATIENT_HYPERTHYROIDISM";
+drop table if exists "USER_HYPERTHYROIDISM";
 drop table if exists "DUMMY";
 
 -- create tables
@@ -21,7 +21,7 @@ create table "ROLE" (
     primary key (id)
 );
 
-create table "PATIENT" (
+create table "USER" (
     id bigserial not null,
     first_name varchar(50) not null,
     last_name varchar(50) not null,
@@ -31,7 +31,7 @@ create table "PATIENT" (
     date_of_birth date not null,
     phone_number varchar(14) not null,
     gender varchar(10) not null,
-    date_of_registration timestamp,
+    registration_date timestamp,
     status varchar(10),
     is_body_mass_index_active boolean,
     is_hypertension_active boolean,
@@ -42,13 +42,13 @@ create table "PATIENT" (
     primary key (id)
 );
 
-create table "PATIENT_ROLE" (
+create table "USER_ROLE" (
     id bigserial not null,
-    patient_id int not null,
+    user_id int not null,
     role_id int not null,
     primary key (id),
-    constraint fk_patient_role foreign key (patient_id) references "PATIENT" (id),
-    constraint fk_role foreign key (role_id) references "ROLE" (id)
+    constraint fk_user_role foreign key (user_id) references "USER" (id),
+    constraint fk_role_user foreign key (role_id) references "ROLE" (id)
 );
 
 create table "ILLNESS" (
@@ -76,12 +76,12 @@ create table "BODY_MASS_INDEX" (
     constraint fk_bmi_info foreign key (bmi_info_id) references "BODY_MASS_INDEX_INFO" (id)
 );
 
-create table "PATIENT_BODY_MASS_INDEX" (
-   patient_id int not null,
+create table "USER_BODY_MASS_INDEX" (
+   user_id int not null,
    bmi_id int not null,
-   primary key (patient_id, bmi_id),
-   constraint fk_patient_bmi foreign key (patient_id) references "PATIENT" (id),
-   constraint fk_bmi_patient foreign key (bmi_id) references "BODY_MASS_INDEX" (id)
+   primary key (user_id, bmi_id),
+   constraint fk_user_bmi foreign key (user_id) references "USER" (id),
+   constraint fk_bmi_user foreign key (bmi_id) references "BODY_MASS_INDEX" (id)
 );
 
 create table "HYPERTENSION_INFO" (
@@ -102,12 +102,12 @@ create table "HYPERTENSION" (
    constraint fk_hypertension_info foreign key (hypertension_info_id) references "HYPERTENSION_INFO" (id)
 );
 
-create table "PATIENT_HYPERTENSION" (
-   patient_id int not null,
+create table "USER_HYPERTENSION" (
+   user_id int not null,
    hypertension_id int not null,
-   primary key (patient_id, hypertension_id),
-   constraint fk_patient_hypertension foreign key (patient_id) references "PATIENT" (id),
-   constraint fk_hypertension_patient foreign key (hypertension_id) references "HYPERTENSION" (id)
+   primary key (user_id, hypertension_id),
+   constraint fk_user_hypertension foreign key (user_id) references "USER" (id),
+   constraint fk_hypertension_user foreign key (hypertension_id) references "HYPERTENSION" (id)
 );
 
 create table "HYPERTHYROIDISM_INFO" (
@@ -128,12 +128,12 @@ create table "HYPERTHYROIDISM" (
     primary key (id)
 );
 
-create table "PATIENT_HYPERTHYROIDISM" (
-    patient_id int not null,
+create table "USER_HYPERTHYROIDISM" (
+    user_id int not null,
     hyperthyroidism_id int not null,
-    primary key (patient_id, hyperthyroidism_id),
-    constraint fk_patient_hyperthyroidism foreign key (patient_id) references "PATIENT" (id),
-    constraint fk_hyperthyroidism_patient foreign key (hyperthyroidism_id) references "HYPERTHYROIDISM" (id)
+    primary key (user_id, hyperthyroidism_id),
+    constraint fk_user_hyperthyroidism foreign key (user_id) references "USER" (id),
+    constraint fk_hyperthyroidism_user foreign key (hyperthyroidism_id) references "HYPERTHYROIDISM" (id)
 );
 
 create table "DIABETES_MELLITUS_TYPE_II" (
@@ -144,12 +144,12 @@ create table "DIABETES_MELLITUS_TYPE_II" (
    primary key (id)
 );
 
-create table "PATIENT_DIABETES_MELLITUS_TYPE_II" (
-   patient_id int not null,
+create table "USER_DIABETES_MELLITUS_TYPE_II" (
+   user_id int not null,
    dmt_id int not null,
-   primary key (patient_id, dmt_id),
-   constraint fk_patient_dmt foreign key (patient_id) references "PATIENT" (id),
-   constraint fk_dmt_patient foreign key (dmt_id) references "DIABETES_MELLITUS_TYPE_II" (id)
+   primary key (user_id, dmt_id),
+   constraint fk_user_dmt foreign key (user_id) references "USER" (id),
+   constraint fk_dmt_user foreign key (dmt_id) references "DIABETES_MELLITUS_TYPE_II" (id)
 );
 
 create table "PAINFUL_SYNDROME" (
@@ -161,12 +161,12 @@ create table "PAINFUL_SYNDROME" (
     primary key (id)
 );
 
-create table "PATIENT_PAINFUL_SYNDROME" (
-    patient_id int not null,
+create table "USER_PAINFUL_SYNDROME" (
+    user_id int not null,
     ps_id int not null,
-    primary key (patient_id, ps_id),
-    constraint fk_patient_ps foreign key (patient_id) references "PATIENT" (id),
-    constraint fk_ps_patient foreign key (ps_id) references "PAINFUL_SYNDROME" (id)
+    primary key (user_id, ps_id),
+    constraint fk_user_ps foreign key (user_id) references "USER" (id),
+    constraint fk_ps_user foreign key (ps_id) references "PAINFUL_SYNDROME" (id)
 );
 
 create table "GASTRO_ESOPHAGEAL_REFLUX" (
@@ -177,12 +177,12 @@ create table "GASTRO_ESOPHAGEAL_REFLUX" (
     primary key (id)
 );
 
-create table "PATIENT_GASTRO_ESOPHAGEAL_REFLUX" (
-    patient_id int not null,
+create table "USER_GASTRO_ESOPHAGEAL_REFLUX" (
+    user_id int not null,
     ger_id int not null,
-    primary key (patient_id, ger_id),
-    constraint fk_patient_ger foreign key (patient_id) references "PATIENT" (id),
-    constraint fk_ger_patient foreign key (ger_id) references "GASTRO_ESOPHAGEAL_REFLUX" (id)
+    primary key (user_id, ger_id),
+    constraint fk_user_ger foreign key (user_id) references "USER" (id),
+    constraint fk_ger_user foreign key (ger_id) references "GASTRO_ESOPHAGEAL_REFLUX" (id)
 );
 
 create sequence dummy_id_sequence start with 1 increment by 1 minvalue 1 maxvalue 99999;

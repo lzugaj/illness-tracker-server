@@ -1,7 +1,7 @@
 package com.luv2code.illnesstracker.service;
 
-import com.luv2code.illnesstracker.domain.Patient;
 import com.luv2code.illnesstracker.domain.Role;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.enums.GenderType;
 import com.luv2code.illnesstracker.exception.EntityNotFoundException;
 import com.luv2code.illnesstracker.repository.RoleRepository;
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.luv2code.illnesstracker.domain.enums.RoleType.*;
 import static com.luv2code.illnesstracker.domain.enums.StatusType.ACTIVE;
@@ -32,7 +33,7 @@ public class RoleServiceImplTest {
     @Mock
     private RoleRepository roleRepository;
 
-    private Role patientRole;
+    private Role userRole;
     private Role doctorRole;
     private Role adminRole;
 
@@ -40,10 +41,10 @@ public class RoleServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        patientRole = new Role();
-        patientRole.setId(1L);
-        patientRole.setName(PATIENT);
-        patientRole.setDescription("The user role can perform CRUD operations over his/her profile and illnesses.");
+        userRole = new Role();
+        userRole.setId(1L);
+        userRole.setName(USER);
+        userRole.setDescription("The user role can perform CRUD operations over his/her profile and illnesses.");
 
         doctorRole = new Role();
         doctorRole.setId(2L);
@@ -55,46 +56,43 @@ public class RoleServiceImplTest {
         adminRole.setName(ADMIN);
         adminRole.setDescription("The admin role can perform CRUD operations over all application users and illnesses.");
 
-        final Patient firstPatient = new Patient();
-        firstPatient.setFirstName("Michael");
-        firstPatient.setLastName("Jordan");
-        firstPatient.setEmail("michael.jordan23@gmail.com");
-        firstPatient.setPassword("theGoat23");
-        firstPatient.setDateOfBirth(LocalDate.of(1987, 10, 14));
-        firstPatient.setPhoneNumber("+385918742236");
-        firstPatient.setGender(GenderType.MALE);
-        firstPatient.setDateOfRegistration(LocalDateTime.now());
-        firstPatient.setStatus(ACTIVE);
-        firstPatient.setRoles(Collections.singletonList(patientRole));
+        final User firstUser = new User();
+        firstUser.setFirstName("Michael");
+        firstUser.setLastName("Jordan");
+        firstUser.setEmail("michael.jordan23@gmail.com");
+        firstUser.setPassword("theGoat23");
+        firstUser.setDateOfBirth(LocalDate.of(1987, 10, 14));
+        firstUser.setPhoneNumber("+385918742236");
+        firstUser.setGender(GenderType.MALE);
+        firstUser.setDateOfRegistration(LocalDateTime.now());
+        firstUser.setStatus(ACTIVE);
+        firstUser.setRoles(Collections.singletonList(userRole));
 
-        patientRole.setPatients(Collections.singletonList(firstPatient));
+        userRole.setUsers(Collections.singletonList(firstUser));
 
         roles = new ArrayList<>();
-        roles.add(patientRole);
+        roles.add(userRole);
         roles.add(doctorRole);
 
-        Mockito.when(roleRepository.findById(patientRole.getId())).thenReturn(java.util.Optional.ofNullable(patientRole));
+        Mockito.when(roleRepository.findById(userRole.getId())).thenReturn(java.util.Optional.ofNullable(userRole));
         Mockito.when(roleRepository.findByName(doctorRole.getName())).thenReturn(java.util.Optional.ofNullable(doctorRole));
         Mockito.when(roleRepository.findAll()).thenReturn(roles);
     }
 
     @Test
     public void should_Return_When_Id_Is_Valid() {
-        final Role searchedRole = roleService.findById(patientRole.getId());
+        final Role searchedRole = roleService.findById(userRole.getId());
 
         Assertions.assertNotNull(searchedRole);
-        Assertions.assertEquals(patientRole, searchedRole);
+        Assertions.assertEquals(userRole, searchedRole);
         Assertions.assertEquals("1", String.valueOf(searchedRole.getId()));
-        Assertions.assertEquals("PATIENT", searchedRole.getName().name());
+        Assertions.assertEquals("USER", searchedRole.getName().name());
     }
 
     @Test
     public void should_Throw_Exception_When_Id_Is_Not_Valid() {
         Mockito.when(roleRepository.findById(doctorRole.getId()))
-                .thenThrow(new EntityNotFoundException(
-                        "Role",
-                        "id",
-                        String.valueOf(doctorRole.getId())));
+                .thenReturn(Optional.empty());
 
         final Exception exception = Assertions.assertThrows(
                 EntityNotFoundException.class,
@@ -119,10 +117,7 @@ public class RoleServiceImplTest {
     @Test
     public void should_Throw_Exception_When_Name_Is_Not_Valid() {
         Mockito.when(roleRepository.findByName(adminRole.getName()))
-                .thenThrow(new EntityNotFoundException(
-                        "Role",
-                        "name",
-                        adminRole.getName().name()));
+                .thenReturn(Optional.empty());
 
         final Exception exception = Assertions.assertThrows(
                 EntityNotFoundException.class,

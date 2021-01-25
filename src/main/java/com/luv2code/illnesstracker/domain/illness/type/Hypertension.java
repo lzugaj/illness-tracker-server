@@ -1,13 +1,14 @@
 package com.luv2code.illnesstracker.domain.illness.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.base.BaseIllness;
 import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "HYPERTENSION")
 @EqualsAndHashCode(callSuper = true)
-public class Hypertension extends BaseIllness {
+public class Hypertension extends BaseIllness implements Serializable {
 
     @Column(name = "systolic")
     @NotNull(message = "{validation.hypertension.systolic.not_null}")
@@ -38,9 +39,9 @@ public class Hypertension extends BaseIllness {
     @JsonIgnore
     @ToString.Exclude
     @JoinTable(
-            name = "PATIENT_HYPERTENSION",
+            name = "USER_HYPERTENSION",
             joinColumns = @JoinColumn(name = "hypertension_id"),
-            inverseJoinColumns = @JoinColumn(name = "patient_id"))
-    private List<Patient> patients;
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 
 }

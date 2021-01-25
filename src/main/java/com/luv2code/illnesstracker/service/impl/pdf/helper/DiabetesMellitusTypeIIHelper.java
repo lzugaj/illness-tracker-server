@@ -2,7 +2,7 @@ package com.luv2code.illnesstracker.service.impl.pdf.helper;
 
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.DiabetesMellitusTypeII;
 import com.luv2code.illnesstracker.service.FormatterService;
 import com.luv2code.illnesstracker.service.PdfCellBuilderService;
@@ -17,9 +17,9 @@ public class DiabetesMellitusTypeIIHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiabetesMellitusTypeIIHelper.class);
 
-    public static void populate(final PdfPTable table, final Patient patient) {
+    public static void populate(final PdfPTable table, final User user) {
         Integer counter = 1;
-        for (DiabetesMellitusTypeII diabetesMellitusTypeII : patient.getDiabetesMellitusTypesII()) {
+        for (DiabetesMellitusTypeII diabetesMellitusTypeII : user.getDiabetesMellitusTypesII()) {
             final PdfCellBuilderService cellBuilderService = new PdfCellBuilderServiceImpl();
 
             PdfPCell diabetesMellitusTypeIICell = cellBuilderService.add(String.valueOf(counter));

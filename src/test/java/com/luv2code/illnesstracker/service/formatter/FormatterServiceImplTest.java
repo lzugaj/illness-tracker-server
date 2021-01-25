@@ -1,5 +1,6 @@
-package com.luv2code.illnesstracker.service.impl.formatter;
+package com.luv2code.illnesstracker.service.formatter;
 
+import com.luv2code.illnesstracker.service.impl.formatter.FormatterServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

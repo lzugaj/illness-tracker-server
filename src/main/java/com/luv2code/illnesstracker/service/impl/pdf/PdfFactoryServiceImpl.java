@@ -4,7 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.exception.PdfGenerateException;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.impl.pdf.helper.*;
@@ -24,7 +24,7 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PdfFactoryServiceImpl.class);
 
     @Override
-    public ByteArrayInputStream generate(final Patient patient, final String illnessName) {
+    public ByteArrayInputStream generate(final User user, final String illnessName) {
         final Document document = new Document();
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
@@ -37,7 +37,7 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
             document.open();
 
             setupTitle(document, illnessName);
-            setupPatientInfo(document, patient);
+            setupUserInfo(document, user);
 
             final PdfPTable table;
             switch (illnessName) {
@@ -45,37 +45,37 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                     table = new PdfPTable(PdfReportUtil.BMI_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 4, 6});
-                    createTable(document, table, patient, illnessName, PdfReportUtil.getBMIColumnNames());
+                    createTable(document, table, user, illnessName, PdfReportUtil.getBMIColumnNames());
                     break;
                 case IllnessTypeUtil.HYPERTENSION:
                     table = new PdfPTable(PdfReportUtil.HYPERTENSION_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 7});
-                    createTable(document, table, patient, illnessName, PdfReportUtil.getHypertensionColumnNames());
+                    createTable(document, table, user, illnessName, PdfReportUtil.getHypertensionColumnNames());
                     break;
                 case IllnessTypeUtil.HYPERTHYROIDISM:
                     table = new PdfPTable(PdfReportUtil.HYPERTHYROIDISM_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 3});
-                    createTable(document, table, patient, illnessName, PdfReportUtil.getHyperthyroidismColumnNames());
+                    createTable(document, table, user, illnessName, PdfReportUtil.getHyperthyroidismColumnNames());
                     break;
                 case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
                     table = new PdfPTable(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3});
-                    createTable(document, table, patient, illnessName, PdfReportUtil.getDiabetesMellitusTypeIIColumnNames());
+                    createTable(document, table, user, illnessName, PdfReportUtil.getDiabetesMellitusTypeIIColumnNames());
                     break;
                 case IllnessTypeUtil.PAINFUL_SYNDROMES:
                     table = new PdfPTable(PdfReportUtil.PAINFUL_SYNDROMES_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 6, 6, 3});
-                    createTable(document, table, patient, illnessName, PdfReportUtil.getPainfulSyndromesColumnNames());
+                    createTable(document, table, user, illnessName, PdfReportUtil.getPainfulSyndromesColumnNames());
                     break;
                 case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
                     table = new PdfPTable(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 6, 6});
-                    createTable(document, table, patient, illnessName, PdfReportUtil.getGastroEsophagealRefluxColumnNames());
+                    createTable(document, table, user, illnessName, PdfReportUtil.getGastroEsophagealRefluxColumnNames());
                     break;
             }
 
@@ -83,13 +83,13 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
         } catch (final DocumentException e) {
             LOGGER.error("Error while generating pdf report for bmi.");
             LOGGER.error(e.getMessage());
-            throw new PdfGenerateException("Patient", "id", String.valueOf(patient.getId()));
+            throw new PdfGenerateException("User", "id", String.valueOf(user.getId()));
         }
 
         return new ByteArrayInputStream(stream.toByteArray());
     }
 
-    private void createTable(final Document document, final PdfPTable table, final Patient patient, final String illnessName, final List<String> columnNames) throws DocumentException {
+    private void createTable(final Document document, final PdfPTable table, final User user, final String illnessName, final List<String> columnNames) throws DocumentException {
         for (String columnName : columnNames) {
             final Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
             final PdfPCell cell = new PdfPCell(new Phrase(columnName, headFont));
@@ -99,22 +99,22 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
 
         switch (illnessName) {
             case IllnessTypeUtil.BODY_MASS_INDEX:
-                BodyMassIndexHelper.populate(table, patient);
+                BodyMassIndexHelper.populate(table, user);
                 break;
             case IllnessTypeUtil.HYPERTENSION:
-                HypertensionHelper.populate(table, patient);
+                HypertensionHelper.populate(table, user);
                 break;
             case IllnessTypeUtil.HYPERTHYROIDISM:
-                HyperthyroidismHelper.populate(table, patient);
+                HyperthyroidismHelper.populate(table, user);
                 break;
             case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
-                DiabetesMellitusTypeIIHelper.populate(table, patient);
+                DiabetesMellitusTypeIIHelper.populate(table, user);
                 break;
             case IllnessTypeUtil.PAINFUL_SYNDROMES:
-                PatientSyndromeHelper.populate(table, patient);
+                UserSyndromeHelper.populate(table, user);
                 break;
             case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
-                GastroEsophagealRefluxHelper.populate(table, patient);
+                GastroEsophagealRefluxHelper.populate(table, user);
                 break;
         }
 
@@ -157,12 +157,12 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
         return title;
     }
 
-    private static void setupPatientInfo(final Document document, final Patient patient) throws DocumentException {
+    private static void setupUserInfo(final Document document, final User user) throws DocumentException {
         final Font dynamicTextFont = FontFactory.getFont(FontFactory.HELVETICA, 14);
-        final Paragraph fullName = new Paragraph(PdfReportUtil.PATIENT_FULL_NAME + getPatientFullName(patient), dynamicTextFont);
-        final Paragraph dateOfBirth = new Paragraph(PdfReportUtil.PATIENT_DATE_OF_BIRTH + getPatientDateOfBirth(patient), dynamicTextFont);
-        final Paragraph email = new Paragraph(PdfReportUtil.PATIENT_EMAIL + patient.getEmail(), dynamicTextFont);
-        final Paragraph phoneNumber = new Paragraph(PdfReportUtil.PATIENT_PHONE_NUMBER + patient.getPhoneNumber(), dynamicTextFont);
+        final Paragraph fullName = new Paragraph(PdfReportUtil.USER_FULL_NAME + getUserFullName(user), dynamicTextFont);
+        final Paragraph dateOfBirth = new Paragraph(PdfReportUtil.USER_DATE_OF_BIRTH + getUserDateOfBirth(user), dynamicTextFont);
+        final Paragraph email = new Paragraph(PdfReportUtil.USER_EMAIL + user.getEmail(), dynamicTextFont);
+        final Paragraph phoneNumber = new Paragraph(PdfReportUtil.USER_PHONE_NUMBER + user.getPhoneNumber(), dynamicTextFont);
 
         document.add(fullName);
         document.add(dateOfBirth);
@@ -172,13 +172,13 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
         document.add(Chunk.NEWLINE);
     }
 
-    private static String getPatientFullName(final Patient patient) {
-        return patient.getFirstName() + " " + patient.getLastName();
+    private static String getUserFullName(final User user) {
+        return user.getFirstName() + " " + user.getLastName();
     }
 
-    private static String getPatientDateOfBirth(final Patient patient) {
-        return patient.getDateOfBirth().getDayOfMonth() + "." +
-                patient.getDateOfBirth().getMonthValue() + "." +
-                patient.getDateOfBirth().getYear();
+    private static String getUserDateOfBirth(final User user) {
+        return user.getDateOfBirth().getDayOfMonth() + "." +
+                user.getDateOfBirth().getMonthValue() + "." +
+                user.getDateOfBirth().getYear();
     }
 }

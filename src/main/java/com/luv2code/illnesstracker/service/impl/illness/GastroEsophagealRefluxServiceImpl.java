@@ -1,9 +1,9 @@
 package com.luv2code.illnesstracker.service.impl.illness;
 
-import com.luv2code.illnesstracker.domain.Patient;
+import com.luv2code.illnesstracker.domain.User;
 import com.luv2code.illnesstracker.domain.illness.type.GastroEsophagealReflux;
 import com.luv2code.illnesstracker.repository.illness.IllnessTypeRepository;
-import com.luv2code.illnesstracker.service.PatientService;
+import com.luv2code.illnesstracker.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,14 @@ public class GastroEsophagealRefluxServiceImpl extends AbstractIllnessTypeServic
 
     @Autowired
     public GastroEsophagealRefluxServiceImpl(final IllnessTypeRepository<GastroEsophagealReflux> illnessTypeRepository,
-                                             final PatientService patientService) {
-        super(illnessTypeRepository, patientService, GastroEsophagealReflux.class);
+                                             final UserService userService) {
+        super(illnessTypeRepository, userService, GastroEsophagealReflux.class);
     }
 
     @Override
-    public GastroEsophagealReflux save(final Patient patient, final GastroEsophagealReflux gastroEsophagealReflux) {
-        setupVariablesCreate(patient, gastroEsophagealReflux);
-        return super.save(patient, gastroEsophagealReflux);
+    public GastroEsophagealReflux save(final User user, final GastroEsophagealReflux gastroEsophagealReflux) {
+        setupVariablesCreate(user, gastroEsophagealReflux);
+        return super.save(user, gastroEsophagealReflux);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class GastroEsophagealRefluxServiceImpl extends AbstractIllnessTypeServic
     }
 
     @Override
-    public List<GastroEsophagealReflux> findAllForPatient(final Patient patient) {
-        return super.findAllForPatient(patient);
+    public List<GastroEsophagealReflux> findAllForUser(final User user) {
+        return super.findAllForUser(user);
     }
 
     @Override
@@ -56,18 +56,18 @@ public class GastroEsophagealRefluxServiceImpl extends AbstractIllnessTypeServic
         super.delete(gastroEsophagealReflux);
     }
 
-    private void setupVariablesCreate(final Patient patient, final GastroEsophagealReflux gastroEsophagealReflux) {
+    private void setupVariablesCreate(final User user, final GastroEsophagealReflux gastroEsophagealReflux) {
         LOGGER.info("Setting up new GastroEsophagealReflux variables.");
         gastroEsophagealReflux.setDateOfPerformedMeasurement(LocalDateTime.now());
 
-        final List<GastroEsophagealReflux> gastroEsophagealRefluxes = findAllForPatient(patient);
-        LOGGER.info("Successfully founded ´{}´ GastroEsophagealReflux record for Patient with id: ´{}´.", gastroEsophagealRefluxes.size(), patient.getId());
+        final List<GastroEsophagealReflux> gastroEsophagealRefluxes = findAllForUser(user);
+        LOGGER.info("Successfully founded ´{}´ GastroEsophagealReflux record for User with id: ´{}´.", gastroEsophagealRefluxes.size(), user.getId());
 
         gastroEsophagealRefluxes.add(gastroEsophagealReflux);
-        gastroEsophagealReflux.setPatients(Collections.singletonList(patient));
+        gastroEsophagealReflux.setUsers(Collections.singletonList(user));
 
-        LOGGER.info("Setting up Patient variables.");
-        patient.setGastroEsophagealRefluxes(gastroEsophagealRefluxes);
+        LOGGER.info("Setting up User variables.");
+        user.setGastroEsophagealRefluxes(gastroEsophagealRefluxes);
     }
 
     private void setupVariablesUpdate(final GastroEsophagealReflux oldGastroEsophagealReflux, final GastroEsophagealReflux newGastroEsophagealReflux) {

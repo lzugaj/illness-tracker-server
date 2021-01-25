@@ -6,6 +6,7 @@ import com.luv2code.illnesstracker.domain.enums.RoleType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
@@ -16,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "ROLE")
-public class Role extends BaseEntity {
+public class Role extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     @Enumerated(EnumType.STRING)
@@ -28,6 +29,6 @@ public class Role extends BaseEntity {
     @JsonIgnore
     @ToString.Exclude
     @ManyToMany(mappedBy = "roles")
-    private List<Patient> patients;
+    private List<User> users;
 
 }
