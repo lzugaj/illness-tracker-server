@@ -34,6 +34,9 @@ public class GastroEsophagealRefluxHelper {
             gerCell = cellBuilderService.add(String.valueOf(gastroEsophagealReflux.getDatetimeOfOnsetOfSymptoms()));
             table.addCell(gerCell);
 
+            gerCell = cellBuilderService.add(String.valueOf(gastroEsophagealReflux.getDescription()));
+            table.addCell(gerCell);
+
             counter++;
         }
     }

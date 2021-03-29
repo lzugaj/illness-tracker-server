@@ -5,13 +5,18 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.luv2code.illnesstracker.domain.User;
+import com.luv2code.illnesstracker.domain.info.BodyMassIndexInfo;
+import com.luv2code.illnesstracker.domain.info.HypertensionInfo;
 import com.luv2code.illnesstracker.exception.PdfGenerateException;
+import com.luv2code.illnesstracker.service.IllnessTypeInfoService;
 import com.luv2code.illnesstracker.service.PdfFactoryService;
 import com.luv2code.illnesstracker.service.impl.pdf.helper.*;
 import com.luv2code.illnesstracker.util.IllnessTypeUtil;
 import com.luv2code.illnesstracker.util.PdfReportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -22,6 +27,17 @@ import java.util.List;
 public class PdfFactoryServiceImpl implements PdfFactoryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PdfFactoryServiceImpl.class);
+
+    private final IllnessTypeInfoService<BodyMassIndexInfo> bodyMassIndexInfoService;
+
+    private final IllnessTypeInfoService<HypertensionInfo> hypertensionInfoService;
+
+    @Autowired
+    public PdfFactoryServiceImpl(@Qualifier("bodyMassIndexInfoServiceImpl") final IllnessTypeInfoService<BodyMassIndexInfo> bodyMassIndexInfoService,
+                                 @Qualifier("hypertensionInfoServiceImpl") final IllnessTypeInfoService<HypertensionInfo> hypertensionInfoService) {
+        this.bodyMassIndexInfoService = bodyMassIndexInfoService;
+        this.hypertensionInfoService = hypertensionInfoService;
+    }
 
     @Override
     public ByteArrayInputStream generate(final User user, final String illnessName) {
@@ -46,12 +62,14 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 4, 6});
                     createTable(document, table, user, illnessName, PdfReportUtil.getBMIColumnNames());
+                    createLegendInfo(document, illnessName);
                     break;
                 case IllnessTypeUtil.HYPERTENSION:
                     table = new PdfPTable(PdfReportUtil.HYPERTENSION_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
                     table.setWidths(new int[]{1, 6, 3, 3, 7});
                     createTable(document, table, user, illnessName, PdfReportUtil.getHypertensionColumnNames());
+                    createLegendInfo(document, illnessName);
                     break;
                 case IllnessTypeUtil.HYPERTHYROIDISM:
                     table = new PdfPTable(PdfReportUtil.HYPERTHYROIDISM_NUMBER_OF_COLUMNS);
@@ -62,7 +80,7 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                 case IllnessTypeUtil.DIABETES_MELLITUS_TYPE_II:
                     table = new PdfPTable(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
-                    table.setWidths(new int[]{1, 6, 3, 3});
+                    table.setWidths(new int[]{1, 6, 3, 3, 6});
                     createTable(document, table, user, illnessName, PdfReportUtil.getDiabetesMellitusTypeIIColumnNames());
                     break;
                 case IllnessTypeUtil.PAINFUL_SYNDROMES:
@@ -74,7 +92,7 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
                 case IllnessTypeUtil.GASTRO_ESOPHAGEAL_REFLUX:
                     table = new PdfPTable(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_NUMBER_OF_COLUMNS);
                     table.setWidthPercentage(95);
-                    table.setWidths(new int[]{1, 6, 6, 6});
+                    table.setWidths(new int[]{1, 6, 6, 6, 6});
                     createTable(document, table, user, illnessName, PdfReportUtil.getGastroEsophagealRefluxColumnNames());
                     break;
             }
@@ -87,6 +105,17 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
         }
 
         return new ByteArrayInputStream(stream.toByteArray());
+    }
+
+    private void createLegendInfo(Document document, final String illnessName) throws DocumentException {
+        switch (illnessName) {
+            case IllnessTypeUtil.BODY_MASS_INDEX:
+                BodyMassIndexHelper.inform(document, bodyMassIndexInfoService);
+                break;
+            case IllnessTypeUtil.HYPERTENSION:
+                HypertensionHelper.inform(document, hypertensionInfoService);
+                break;
+        }
     }
 
     private void createTable(final Document document, final PdfPTable table, final User user, final String illnessName, final List<String> columnNames) throws DocumentException {
@@ -119,6 +148,7 @@ public class PdfFactoryServiceImpl implements PdfFactoryService {
         }
 
         document.add(table);
+        document.add(Chunk.NEWLINE);
     }
 
     private static void setupTitle(final Document document, final String illnessName) throws DocumentException {

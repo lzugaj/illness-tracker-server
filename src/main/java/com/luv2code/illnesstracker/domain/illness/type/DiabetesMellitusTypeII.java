@@ -25,9 +25,12 @@ public class DiabetesMellitusTypeII extends BaseIllness implements Serializable 
     @NotNull(message = "{validation.dmt.guk_0.not_null}")
     private Double guk0;
 
-    @Column(name = "guk1")
-    @NotNull(message = "{validation.dmt.guk_1.not_null}")
-    private Double guk1;
+    @Column(name = "guk2")
+    @NotNull(message = "{validation.dmt.guk_2.not_null}")
+    private Double guk2;
+
+    @Column(name = "description")
+    private String description;
 
     @ManyToMany
     @JsonIgnore

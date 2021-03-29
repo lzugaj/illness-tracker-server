@@ -30,6 +30,9 @@ public class GastroEsophagealReflux extends BaseIllness implements Serializable 
     @NotNull(message = "{validation.patient.datetime_of_onset_of_symptoms.not_null}")
     private LocalDateTime datetimeOfOnsetOfSymptoms;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToMany
     @JsonIgnore
     @ToString.Exclude

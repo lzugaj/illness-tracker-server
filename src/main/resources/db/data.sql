@@ -1,5 +1,5 @@
 -- insert data into tables
-insert into "ROLE" values (1, 'PATIENT', 'The user role can perform CRUD operations over his/her profile and illnesses.');
+insert into "ROLE" values (1, 'USER', 'The user role can perform CRUD operations over his/her profile and illnesses.');
 insert into "ROLE" values (2, 'DOCTOR', 'The doctor role can perform specific CRUD operations over application users and illnesses.');
 insert into "ROLE" values (3, 'ADMIN', 'The admin role can perform CRUD operations over all application users and illnesses.');
 

@@ -6,7 +6,7 @@ import java.util.List;
 public class PdfReportUtil {
 
     // Application name
-    public static final String SYSTEM_NAME = "PIMS - User illness monitoring system";
+    public static final String SYSTEM_NAME = "UIMS - User illness monitoring system";
 
     // Header and Footer
     public static final String CURRENT_DATE = "Date: ";
@@ -88,12 +88,13 @@ public class PdfReportUtil {
 
     // Diabetes Mellitus Type II
     public static final String DIABETES_MELLITUS_TYPE_II_TITLE = "Diabetes Mellitus Type II values measurement history";
-    public static final Integer DIABETES_MELLITUS_TYPE_II_NUMBER_OF_COLUMNS = 4;
+    public static final Integer DIABETES_MELLITUS_TYPE_II_NUMBER_OF_COLUMNS = 5;
 
     public static final String DIABETES_MELLITUS_TYPE_II_ID = "Id";
     public static final String DIABETES_MELLITUS_TYPE_II_DATE_OF_MEASUREMENT = "Date of measurement";
     public static final String DIABETES_MELLITUS_TYPE_II_GUK0 = "GUK0";
-    public static final String DIABETES_MELLITUS_TYPE_II_GUK1 = "GUK1";
+    public static final String DIABETES_MELLITUS_TYPE_II_GUK2 = "GUK2";
+    public static final String DIABETES_MELLITUS_TYPE_II_DESCRIPTION = "Description";
 
     public static List<String> diabetesMellitusTypeIIColumnNames;
     public static List<String> getDiabetesMellitusTypeIIColumnNames() {
@@ -101,7 +102,8 @@ public class PdfReportUtil {
         diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_ID);
         diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_DATE_OF_MEASUREMENT);
         diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_GUK0);
-        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_GUK1);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_GUK2);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.DIABETES_MELLITUS_TYPE_II_DESCRIPTION);
         return diabetesMellitusTypeIIColumnNames;
     }
 
@@ -134,6 +136,7 @@ public class PdfReportUtil {
     public static final String GASTRO_ESOPHAGEAL_REFLUX_DATE_OF_MEASUREMENT = "Date of measurement";
     public static final String GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_LAST_MEAL = "Date and time of last meal";
     public static final String GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_ONSET_OF_SYMPTOMS = "Date and time of onset of symptoms";
+    public static final String GASTRO_ESOPHAGEAL_REFLUX_DESCRIPTION = "Description";
 
     public static List<String> gastroEsophagealRefluxColumnNames;
     public static List<String> getGastroEsophagealRefluxColumnNames() {
@@ -142,6 +145,7 @@ public class PdfReportUtil {
         diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DATE_OF_MEASUREMENT);
         diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_LAST_MEAL);
         diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DATETIME_OF_ONSET_OF_SYMPTOMS);
+        diabetesMellitusTypeIIColumnNames.add(PdfReportUtil.GASTRO_ESOPHAGEAL_REFLUX_DESCRIPTION);
         return gastroEsophagealRefluxColumnNames;
     }
 }

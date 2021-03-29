@@ -31,7 +31,10 @@ public class DiabetesMellitusTypeIIHelper {
             diabetesMellitusTypeIICell = cellBuilderService.add(String.valueOf(diabetesMellitusTypeII.getGuk0()));
             table.addCell(diabetesMellitusTypeIICell);
 
-            diabetesMellitusTypeIICell = cellBuilderService.add(String.valueOf(diabetesMellitusTypeII.getGuk1()));
+            diabetesMellitusTypeIICell = cellBuilderService.add(String.valueOf(diabetesMellitusTypeII.getGuk2()));
+            table.addCell(diabetesMellitusTypeIICell);
+
+            diabetesMellitusTypeIICell = cellBuilderService.add(diabetesMellitusTypeII.getDescription());
             table.addCell(diabetesMellitusTypeIICell);
 
             counter++;

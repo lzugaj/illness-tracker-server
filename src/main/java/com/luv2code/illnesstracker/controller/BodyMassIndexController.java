@@ -30,7 +30,7 @@ public class BodyMassIndexController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BodyMassIndexController.class);
 
     private static final String BMI = "bmi";
-    private static final String PDF_RESOURCE_FOLDER_PATH = "C:\\Workspace\\illness-tracker\\illness-tracker-server\\src\\main\\resources\\pdf\\";
+    private static final String PDF_RESOURCE_FOLDER_PATH = "C:\\Workspace\\illness-tracker\\illness-tracker-server\\src\\main\\resources\\pdf\\bmi";
 
     private final IllnessTypeService<BodyMassIndex> illnessTypeService;
 
@@ -85,7 +85,7 @@ public class BodyMassIndexController {
         return new ResponseEntity<>(bodyMassIndexes, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{username}/download/report")
+    @GetMapping("/user/{username}/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
         final User user = userService.findByUsername(username);
         LOGGER.info("Successfully founded User with username: ´{}´.", username);

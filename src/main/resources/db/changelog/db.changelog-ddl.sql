@@ -77,11 +77,11 @@ create table "BODY_MASS_INDEX" (
 );
 
 create table "USER_BODY_MASS_INDEX" (
-   user_id int not null,
-   bmi_id int not null,
-   primary key (user_id, bmi_id),
-   constraint fk_user_bmi foreign key (user_id) references "USER" (id),
-   constraint fk_bmi_user foreign key (bmi_id) references "BODY_MASS_INDEX" (id)
+    user_id int not null,
+    bmi_id int not null,
+    primary key (user_id, bmi_id),
+    constraint fk_user_bmi foreign key (user_id) references "USER" (id),
+    constraint fk_bmi_user foreign key (bmi_id) references "BODY_MASS_INDEX" (id)
 );
 
 create table "HYPERTENSION_INFO" (
@@ -93,21 +93,21 @@ create table "HYPERTENSION_INFO" (
 );
 
 create table "HYPERTENSION" (
-   id bigserial not null,
-   systolic int not null,
-   diastolic int not null,
-   date_of_performed_measurement timestamp,
-   hypertension_info_id bigint not null,
-   primary key (id),
-   constraint fk_hypertension_info foreign key (hypertension_info_id) references "HYPERTENSION_INFO" (id)
+    id bigserial not null,
+    systolic int not null,
+    diastolic int not null,
+    date_of_performed_measurement timestamp,
+    hypertension_info_id bigint not null,
+    primary key (id),
+    constraint fk_hypertension_info foreign key (hypertension_info_id) references "HYPERTENSION_INFO" (id)
 );
 
 create table "USER_HYPERTENSION" (
-   user_id int not null,
-   hypertension_id int not null,
-   primary key (user_id, hypertension_id),
-   constraint fk_user_hypertension foreign key (user_id) references "USER" (id),
-   constraint fk_hypertension_user foreign key (hypertension_id) references "HYPERTENSION" (id)
+    user_id int not null,
+    hypertension_id int not null,
+    primary key (user_id, hypertension_id),
+    constraint fk_user_hypertension foreign key (user_id) references "USER" (id),
+    constraint fk_hypertension_user foreign key (hypertension_id) references "HYPERTENSION" (id)
 );
 
 create table "HYPERTHYROIDISM_INFO" (
@@ -137,20 +137,20 @@ create table "USER_HYPERTHYROIDISM" (
 );
 
 create table "DIABETES_MELLITUS_TYPE_II" (
-   id bigserial not null,
-   guk0 decimal(5, 2) not null,
-   guk2 decimal(5, 2) not null,
-   description varchar(512),
-   date_of_performed_measurement timestamp,
-   primary key (id)
+    id bigserial not null,
+    guk0 decimal(5, 2) not null,
+    guk2 decimal(5, 2) not null,
+    description varchar(512),
+    date_of_performed_measurement timestamp,
+    primary key (id)
 );
 
 create table "USER_DIABETES_MELLITUS_TYPE_II" (
-   user_id int not null,
-   dmt_id int not null,
-   primary key (user_id, dmt_id),
-   constraint fk_user_dmt foreign key (user_id) references "USER" (id),
-   constraint fk_dmt_user foreign key (dmt_id) references "DIABETES_MELLITUS_TYPE_II" (id)
+    user_id int not null,
+    dmt_id int not null,
+    primary key (user_id, dmt_id),
+    constraint fk_user_dmt foreign key (user_id) references "USER" (id),
+    constraint fk_dmt_user foreign key (dmt_id) references "DIABETES_MELLITUS_TYPE_II" (id)
 );
 
 create table "PAINFUL_SYNDROME" (

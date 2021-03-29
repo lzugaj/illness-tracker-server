@@ -1,4 +1,4 @@
-package com.luv2code.illnesstracker.config;
+package com.luv2code.illnesstracker.configuration;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
-public class MessageSourceConfig {
+public class MessageSourceConfiguration {
 
     @Bean
     public MessageSource messageSource() {

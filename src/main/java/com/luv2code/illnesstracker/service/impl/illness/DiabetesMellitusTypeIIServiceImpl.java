@@ -73,6 +73,6 @@ public class DiabetesMellitusTypeIIServiceImpl extends AbstractIllnessTypeServic
     private void setupVariablesUpdate(final DiabetesMellitusTypeII oldDiabetesMellitusTypeII, final DiabetesMellitusTypeII newDiabetesMellitusTypeII) {
         LOGGER.info("Setting up old DiabetesMellitusTypeII variables.");
         oldDiabetesMellitusTypeII.setGuk0(newDiabetesMellitusTypeII.getGuk0());
-        oldDiabetesMellitusTypeII.setGuk1(newDiabetesMellitusTypeII.getGuk1());
+        oldDiabetesMellitusTypeII.setGuk2(newDiabetesMellitusTypeII.getGuk2());
     }
 }

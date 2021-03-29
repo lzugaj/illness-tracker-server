@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HypertensionInfoServiceImpl extends AbstractIllnessTypeInfoService<HypertensionInfo> {
 
@@ -42,5 +44,10 @@ public class HypertensionInfoServiceImpl extends AbstractIllnessTypeInfoService<
         } else {
             return findByClassification(HypertensionClassificationUtil.HYPERTENSIVE_CRISIS);
         }
+    }
+
+    @Override
+    public List<HypertensionInfo> findAll() {
+        return super.findAll();
     }
 }

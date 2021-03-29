@@ -82,7 +82,7 @@ public class HypertensionController {
         return new ResponseEntity<>(hypertensive, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{username}/download/report")
+    @GetMapping("/user/{username}/report")
     public ResponseEntity<?> generateReport(@PathVariable final String username) throws IOException {
         final User user = userService.findByUsername(username);
         LOGGER.info("Successfully founded User with username: ´{}´.", username);

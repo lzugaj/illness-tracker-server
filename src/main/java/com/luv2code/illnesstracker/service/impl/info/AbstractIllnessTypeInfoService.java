@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,5 +54,12 @@ public abstract class AbstractIllnessTypeInfoService<T extends BaseEntity> imple
 
     private String getIllnessInfoName(final Class<T> illnessInfoClass) {
         return illnessInfoClass.getName().substring(40);
+    }
+
+    @Override
+    public List<T> findAll() {
+        final List<T> illnessesInfo = illnessTypeInfoRepository.findAll();
+        LOGGER.info("Searching all ´{}´.", getIllnessInfoName(illnessInfoClass));
+        return illnessesInfo;
     }
 }

@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BodyMassIndexInfoServiceImpl extends AbstractIllnessTypeInfoService<BodyMassIndexInfo> {
 
@@ -44,5 +46,10 @@ public class BodyMassIndexInfoServiceImpl extends AbstractIllnessTypeInfoService
         } else {
             return findByClassification(BodyMassIndexClassificationUtil.OBESITY_CLASS_III);
         }
+    }
+
+    @Override
+    public List<BodyMassIndexInfo> findAll() {
+        return super.findAll();
     }
 }
